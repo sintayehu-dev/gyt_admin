@@ -1,0 +1,85 @@
+.check-email-form {
+  width: 100%;
+  max-width: 28.75rem;
+}
+
+.check-email-form__header {
+  margin-bottom: var(--spacing-xl);
+}
+
+.check-email-form__logo-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 0;
+  width: 100%;
+}
+
+.check-email-form__header .back-button {
+  display: block;
+  margin-bottom: var(--spacing-xl);
+}
+
+.check-email-form__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.check-email-form__icon {
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-lg);
+}
+
+.check-email-form__icon svg {
+  width: 64px;
+  height: 64px;
+}
+
+.check-email-form__title {
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+.check-email-form__description {
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-md);
+}
+
+.check-email-form__description strong {
+  color: var(--color-text-primary);
+}
+
+.check-email-form__instruction {
+  color: var(--color-text-tertiary);
+  margin-bottom: var(--spacing-xl);
+  line-height: 1.6;
+}
+
+.check-email-form__actions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.check-email-form__resend {
+  color: var(--color-text-tertiary);
+  margin: 0;
+}
+
+.check-email-form__resend-link {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+  font-size: inherit;
+  font-family: inherit;
+}
+
+.check-email-form__resend-link:hover {
+  color: var(--color-primary-hover);
+}

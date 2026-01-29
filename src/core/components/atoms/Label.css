@@ -1,0 +1,10 @@
+.label {
+  display: block;
+  margin-bottom: 0.375rem;
+  color: var(--color-text-primary);
+}
+
+.label__required {
+  color: var(--color-error);
+  margin-left: 0.25rem;
+}

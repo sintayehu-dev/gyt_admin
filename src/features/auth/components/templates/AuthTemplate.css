@@ -1,0 +1,147 @@
+/* AuthTemplate Styles - Split Layout with Right Side Background */
+
+.auth-template-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+    background-color: var(--color-surface);
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.auth-template-logo {
+    width: 100%;
+    margin-bottom: var(--spacing-3xl);
+    display: flex;
+    align-items: flex-start;
+}
+
+.auth-template-logo .logo {
+    margin-bottom: 0;
+}
+
+
+
+
+
+.auth-template-main {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+/* Background Pattern - Hidden on mobile */
+.auth-template-bg-pattern {
+    display: none;
+}
+
+/* Car Image - Hidden on mobile */
+.auth-template-car-image {
+    display: none;
+}
+
+/* Form Content - Full width on mobile */
+.auth-template-form {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-xl) var(--spacing-md);
+    background-color: var(--color-surface);
+    position: relative;
+}
+
+.auth-template-form__content {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+}
+
+.auth-template-form__content>* {
+    width: 100%;
+}
+
+/* Desktop Layout - Show right side with overlays */
+@media (min-width: 1024px) {
+    .auth-template-main {
+        flex-direction: row;
+    }
+}
+
+/* Form Section - Left 60% */
+@media (min-width: 1024px) {
+    .auth-template-form {
+        width: 55%;
+        padding: var(--spacing-2xl) var(--spacing-2xl);
+        margin-left: var(--spacing-3xl);
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+/* Background Pattern - Right 40% (Desktop only) */
+@media (min-width: 1024px) {
+    .auth-template-bg-pattern {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 45%;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+        padding: 1.5rem;
+        background-color: transparent;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .auth-template-bg-pattern::before {
+        content: '';
+        position: absolute;
+        top: var(--spacing-lg);
+        right: var(--spacing-lg);
+        bottom: var(--spacing-lg);
+        left: var(--spacing-lg);
+        background-image: linear-gradient(rgba(230, 32, 32, 0.15), rgba(218, 96, 96, 0.15)), url('../../../../core/assets/image/form_image_background.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        border-radius: var(--radius-2xl);
+        z-index: 1;
+    }
+
+    /* Car Image - Aligned with background right edge */
+    .auth-template-car-image {
+        display: block;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        top: 0;
+        margin: var(--spacing-lg);
+        background-image: url('../../../../core/assets/image/form_image.png');
+        background-size: contain;
+        background-position: bottom right;
+        background-repeat: no-repeat;
+        z-index: 2;
+    }
+}
+
+/* Responsive padding */
+@media (min-width: 640px) {
+    .auth-template-form {
+        padding: var(--spacing-lg) 1.25rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .auth-template-form {
+        padding: 1.75rem var(--spacing-lg);
+    }
+}

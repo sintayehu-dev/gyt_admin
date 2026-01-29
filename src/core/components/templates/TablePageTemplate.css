@@ -1,0 +1,18 @@
+.table-page-template {
+  width: 100%;
+}
+
+.table-page-template__title {
+  color: #1F2937;
+  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.table-page-template__controls {
+  margin-bottom: 1.5rem;
+}
+
+.table-page-template__content {
+  width: 100%;
+}
+

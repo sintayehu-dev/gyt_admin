@@ -1,0 +1,62 @@
+.admin-management-page {
+  width: 100%;
+}
+
+.admin-management-page__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.admin-management-page__title {
+  margin: 0;
+  margin-top: 1.5rem;
+}
+
+.admin-management-page__add-btn {
+  margin-top: 1.5rem;
+  white-space: nowrap;
+  background: #1F2937 !important;
+  color: white !important;
+  border: none !important;
+  padding: 0.625rem 1.5rem !important;
+  border-radius: 0.5rem !important;
+  font-weight: 400 !important;
+  box-shadow: none !important;
+}
+
+.admin-management-page__add-btn:hover {
+  background: #111827 !important;
+}
+
+.admin-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.admin-avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+}
+
+.status-badge--online {
+  background: #D1FAE5;
+  color: #10B981;
+  font-weight: 500;
+}
+
+.status-badge--offline {
+  background: #FEE2E2;
+  color: #991B1B;
+}

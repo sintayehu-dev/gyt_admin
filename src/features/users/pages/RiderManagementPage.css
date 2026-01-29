@@ -1,0 +1,31 @@
+.rider-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.rider-avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+}
+
+.status-badge--online {
+  background: #D1FAE5;
+  color: #10B981;
+  font-weight: 500;
+}
+
+.status-badge--offline {
+  background: #FEE2E2;
+  color: #991B1B;
+}
+

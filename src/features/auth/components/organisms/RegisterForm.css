@@ -1,0 +1,236 @@
+.register-form {
+    width: 100%;
+    max-width: 100%;
+}
+
+.register-form__header {
+    margin-bottom: var(--spacing-lg);
+    width: 100%;
+}
+
+.register-form__form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.register-form__form>* {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.register-form__error-message {
+    background-color: #fee;
+    border: 1px solid var(--color-error);
+    border-radius: var(--radius-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    color: var(--color-error);
+}
+
+.register-form__title {
+    color: var(--color-text-primary);
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.register-form__form {
+    display: flex;
+    flex-direction: column;
+}
+
+.register-form__row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    margin-bottom: 0;
+    width: 100%;
+}
+
+.register-form__row>* {
+    width: 100%;
+}
+
+@media (min-width: 640px) {
+    .register-form__row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-xl);
+    }
+}
+
+.register-form__phone-wrapper {
+    margin-bottom: var(--spacing-lg);
+    width: 100%;
+}
+
+.register-form__error {
+    display: block;
+    margin-top: var(--spacing-sm);
+    color: var(--color-error);
+}
+
+.register-form__checkbox-wrapper {
+    margin-bottom: var(--spacing-xl);
+}
+
+.register-form__checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-md);
+    cursor: pointer;
+}
+
+.register-form__checkbox {
+    width: 1.125rem;
+    height: 1.125rem;
+    margin-top: var(--spacing-xs);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.register-form__checkbox:disabled {
+    cursor: not-allowed;
+}
+
+.register-form__checkbox-text {
+    line-height: var(--line-height-relaxed);
+}
+
+.register-form__footer {
+    margin-top: var(--spacing-xl);
+    text-align: left;
+}
+
+.register-form__footer-text {
+    color: var(--color-text-secondary);
+    margin: 0;
+}
+
+.register-form__footer-link {
+    color: var(--color-text-primary);
+    text-decoration: none;
+    transition: opacity var(--transition-fast);
+}
+
+.register-form__footer-link:hover {
+    text-decoration: none;
+    opacity: 0.8;
+}
+
+/* Phone Input Wrapper */
+.phone-input-wrapper {
+    width: 100%;
+}
+
+/* Phone Input Custom Styling - react-international-phone */
+.phone-input-wrapper .react-international-phone-input-container {
+    width: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    background-color: var(--color-background) !important;
+    border: none !important;
+    border-radius: var(--radius-md) !important;
+    padding: var(--spacing-sm) var(--spacing-md) !important;
+    gap: 0.75rem !important;
+    height: auto !important;
+    transition: all var(--transition-normal) !important;
+}
+
+.phone-input-wrapper .react-international-phone-input-container:focus-within {
+    background-color: var(--color-hover) !important;
+    outline: none !important;
+}
+
+.phone-input-wrapper .react-international-phone-country-selector-button {
+    background-color: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: var(--spacing-sm) !important;
+    position: relative !important;
+    padding-right: 0.75rem !important;
+    height: auto !important;
+    min-height: auto !important;
+}
+
+/* Divider line after country selector */
+.phone-input-wrapper .react-international-phone-country-selector-button::after {
+    content: '' !important;
+    position: absolute !important;
+    right: 0 !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: 1px !important;
+    height: 2rem !important;
+    background-color: var(--color-input-border) !important;
+}
+
+.phone-input-wrapper .react-international-phone-country-selector-button__button-content {
+    display: flex !important;
+    align-items: center !important;
+    gap: var(--spacing-sm) !important;
+}
+
+/* Flag styling - control size */
+.phone-input-wrapper .react-international-phone-country-selector-button__flag-emoji,
+.phone-input-wrapper .react-international-phone-country-selector-button__flag-img {
+    width: 1.25rem !important;
+    height: 1rem !important;
+    font-size: 1rem !important;
+    object-fit: cover !important;
+    border-radius: var(--radius-sm) !important;
+}
+
+.phone-input-wrapper .react-international-phone-country-selector-button__dropdown-arrow {
+    color: var(--color-text-secondary) !important;
+    opacity: 0.8 !important;
+    width: 0.875rem !important;
+    height: 0.875rem !important;
+}
+
+.phone-input-wrapper .react-international-phone-input {
+    border: none !important;
+    outline: none !important;
+    background-color: transparent !important;
+    padding: 0 !important;
+    width: 100% !important;
+    font-family: var(--font-family-base) !important;
+    flex: 1 !important;
+    color: var(--color-text-primary) !important;
+    height: auto !important;
+}
+
+.phone-input-wrapper .react-international-phone-input::placeholder {
+    color: var(--color-input-placeholder) !important;
+}
+
+.phone-input-wrapper .react-international-phone-input:focus {
+    outline: none !important;
+    border: none !important;
+}
+
+.phone-input-wrapper .react-international-phone-input:disabled {
+    cursor: not-allowed !important;
+}
+
+.phone-input-wrapper .react-international-phone-input-container:has(.react-international-phone-input:disabled) {
+    background-color: var(--color-border) !important;
+}
+
+/* Hide country name text */
+.phone-input-wrapper .react-international-phone-country-selector-button__country-name {
+    display: none !important;
+}
+
+
+/* Mobile responsive */
+@media (max-width: 767px) {
+    .phone-input-wrapper .react-international-phone-input-container {
+        padding: var(--spacing-sm) var(--spacing-md) !important;
+    }
+}

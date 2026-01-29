@@ -1,0 +1,46 @@
+/**
+ * Dashboard Layout Styles
+ */
+
+.dashboard-layout {
+    min-height: 100vh;
+    background: var(--color-dashboard-background, #f7f8fc);
+    display: flex;
+}
+
+.dashboard-layout__content {
+    flex: 1;
+    min-height: 100vh;
+    padding-top: 72px;
+    transition: margin-left var(--transition-normal);
+    background: var(--color-dashboard-background, #f7f8fc);
+}
+
+.dashboard-layout__content-inner {
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 1rem 2rem;
+}
+
+@media (min-width: 768px) {
+    .dashboard-layout__content-inner {
+        padding: 0 1.5rem 2rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .dashboard-layout__content-inner {
+        padding: 0 2rem 2.5rem;
+    }
+
+    .dashboard-layout__content {
+        margin-left: 240px;
+        /* Sidebar width (15rem = 240px) */
+    }
+
+    .dashboard-layout--collapsed .dashboard-layout__content {
+        margin-left: 72px;
+        /* Collapsed sidebar width (4.5rem = 72px) */
+    }
+}

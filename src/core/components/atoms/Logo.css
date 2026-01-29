@@ -1,0 +1,25 @@
+.logo {
+  display: block;
+  margin-bottom: var(--spacing-2xl);
+}
+
+.logo__image {
+  display: block;
+  height: auto;
+}
+
+.logo__image.logo--small {
+  width: 4rem;
+}
+
+.logo__image.logo--mini {
+  width: 3rem;
+}
+
+.logo__image.logo--medium {
+  width: 6rem;
+}
+
+.logo__image.logo--large {
+  width: 15rem;
+}
