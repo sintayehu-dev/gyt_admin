@@ -4,6 +4,12 @@
   color: var(--color-text-primary);
 }
 
+/* Dark theme for auth pages */
+.auth-template-container .label {
+  color: #e5e7eb;
+  font-weight: 500;
+}
+
 .label__required {
   color: var(--color-error);
   margin-left: 0.25rem;

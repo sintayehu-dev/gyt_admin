@@ -18,6 +18,10 @@ const AuthTemplate = ({ children }) => {
           <div className="auth-template-car-image"></div>
         </div>
       </div>
+      
+      <footer className="auth-template-footer">
+        <p>© 2024 THEATER MANAGEMENT SYSTEMS V2.4.0</p>
+      </footer>
     </div>
   );
 };

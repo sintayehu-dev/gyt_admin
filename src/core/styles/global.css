@@ -39,8 +39,8 @@
   --line-height-relaxed: 1.75;
 
   /* Colors - Core */
-  --color-primary: #1a2332;
-  --color-primary-hover: #2a3442;
+  --color-primary: #8B5CF6;
+  --color-primary-hover: #7C3AED;
   --color-on-primary: #FFFFFF;
 
   /* Colors - Surface & Background */
@@ -49,6 +49,14 @@
   --color-background: #f5f7fb;
   --color-dashboard-background: #f5f7fb;
   --color-on-background: #000000;
+  
+  /* Auth Page Colors */
+  --color-auth-bg: #1a1625;
+  --color-auth-card-bg: #2a2438;
+  --color-auth-input-bg: #3a3448;
+  --color-auth-input-border: #4a4458;
+  --color-auth-text: #e5e7eb;
+  --color-auth-text-secondary: #9ca3af;
 
   /* Colors - Secondary */
   --color-secondary: #6366F1;

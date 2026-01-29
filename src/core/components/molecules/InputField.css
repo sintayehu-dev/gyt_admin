@@ -11,6 +11,10 @@
   color: var(--color-error);
 }
 
+.auth-template-container .input-field__error {
+  color: #FCA5A5;
+}
+
 @media (max-width: 767px) {
   .input-field {
     margin-bottom: var(--spacing-md);

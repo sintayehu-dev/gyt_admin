@@ -11,8 +11,19 @@
   box-sizing: border-box;
 }
 
+/* Dark theme for auth pages */
+.auth-template-container .input {
+  background-color: #3a3448;
+  border: 1px solid #4a4458;
+  color: #e5e7eb;
+}
+
 .input::placeholder {
   color: var(--color-input-placeholder);
+}
+
+.auth-template-container .input::placeholder {
+  color: #6b7280;
 }
 
 .input:focus {
@@ -20,8 +31,19 @@
   outline: none;
 }
 
+.auth-template-container .input:focus {
+  background-color: #3a3448;
+  border-color: #8B5CF6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
 .input--error {
   background-color: rgba(239, 68, 68, 0.1);
+}
+
+.auth-template-container .input--error {
+  background-color: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.5);
 }
 
 .input--error:focus {
