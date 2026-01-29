@@ -157,7 +157,7 @@
     align-items: center;
     gap: 0.75rem;
     padding: 0.75rem 1rem;
-    color: #9ca3af;
+    color: #6B7280;
     text-decoration: none;
     transition: all var(--transition-fast);
     border: none;
@@ -175,15 +175,15 @@
 }
 
 .sidebar__link:hover {
-    background-color: rgba(139, 92, 246, 0.1);
-    color: #c4b5fd;
+    background-color: #F3F4F6;
+    color: #8B5CF6;
     text-decoration: none;
 }
 
 .sidebar__link--active {
     background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%);
     color: white;
-    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+    box-shadow: 0 2px 8px rgba(139, 92, 246, 0.25);
 }
 
 .sidebar__icon {
@@ -257,7 +257,7 @@
 .sidebar__sublink {
     display: block;
     padding: var(--spacing-sm) 1rem var(--spacing-sm) 3rem;
-    color: #9ca3af;
+    color: #6B7280;
     text-decoration: none;
     transition: all var(--transition-fast);
     border-radius: var(--radius-lg);
@@ -266,8 +266,8 @@
 }
 
 .sidebar__sublink:hover {
-    background-color: rgba(139, 92, 246, 0.1);
-    color: #c4b5fd;
+    background-color: #F3F4F6;
+    color: #8B5CF6;
     text-decoration: none;
 }
 
@@ -286,12 +286,12 @@
 }
 
 .sidebar::-webkit-scrollbar-thumb {
-    background: rgba(139, 92, 246, 0.3);
+    background: #E5E7EB;
     border-radius: var(--radius-sm);
 }
 
 .sidebar::-webkit-scrollbar-thumb:hover {
-    background: rgba(139, 92, 246, 0.5);
+    background: #D1D5DB;
 }
 
 /* Tooltip for collapsed state */
