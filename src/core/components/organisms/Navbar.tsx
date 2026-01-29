@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../../features/auth';
 import { ROUTE_PATHS } from '../../routes/routeNames';
 import './Navbar.css';
 
-const Navbar = ({ onMenuClick }) => {
+interface NavbarProps {
+    onMenuClick: () => void;
+}
+
+const Navbar = ({ onMenuClick }: NavbarProps) => {
     const navigate = useNavigate();
-    const { logout } = useAuth();
     const [showNotifications, setShowNotifications] = useState(false);
     const [showProfile, setShowProfile] = useState(false);
 
@@ -16,8 +18,9 @@ const Navbar = ({ onMenuClick }) => {
         { id: 3, message: 'Trip completed successfully', time: '1 hour ago' },
     ];
 
-    const handleLogout = async () => {
-        await logout();
+    const handleLogout = () => {
+        console.log('Logout clicked');
+        // For now, just navigate to login
         navigate(ROUTE_PATHS.LOGIN);
     };
 

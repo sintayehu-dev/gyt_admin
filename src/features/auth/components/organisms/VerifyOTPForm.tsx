@@ -1,13 +1,21 @@
 import Button from '../../../../core/components/atoms/Button';
-import { useState, useRef } from 'react';
+import { useState, useRef, ChangeEvent, KeyboardEvent, FormEvent } from 'react';
 import './VerifyOTPForm.css';
 
-const VerifyOTPForm = ({ onSubmit, onResend, loading = false, email = '', error: externalError = null }) => {
-    const [otp, setOtp] = useState(['', '', '', '', '', '']);
-    const [error, setError] = useState('');
-    const inputRefs = useRef([]);
+interface VerifyOTPFormProps {
+  onSubmit: (otp: string) => void;
+  onResend: () => void;
+  loading?: boolean;
+  email?: string;
+  error?: string | null;
+}
 
-    const handleChange = (index, value) => {
+const VerifyOTPForm = ({ onSubmit, onResend, loading = false, email = '', error: externalError = null }: VerifyOTPFormProps) => {
+    const [otp, setOtp] = useState<string[]>(['', '', '', '', '', '']);
+    const [error, setError] = useState<string>('');
+    const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+    const handleChange = (index: number, value: string) => {
         if (!/^\d*$/.test(value)) return;
 
         const newOtp = [...otp];
@@ -21,13 +29,13 @@ const VerifyOTPForm = ({ onSubmit, onResend, loading = false, email = '', error:
         }
     };
 
-    const handleKeyDown = (index, e) => {
+    const handleKeyDown = (index: number, e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Backspace' && !otp[index] && index > 0) {
             inputRefs.current[index - 1]?.focus();
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const otpValue = otp.join('');

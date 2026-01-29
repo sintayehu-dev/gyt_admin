@@ -1,7 +1,12 @@
+import { ReactNode } from 'react';
 import './AuthTemplate.css';
 import Logo from '../../../../core/components/atoms/Logo';
 
-const AuthTemplate = ({ children }) => {
+interface AuthTemplateProps {
+  children: ReactNode;
+}
+
+const AuthTemplate = ({ children }: AuthTemplateProps) => {
   return (
     <div className="auth-template-container">
       <div className="auth-template-main">

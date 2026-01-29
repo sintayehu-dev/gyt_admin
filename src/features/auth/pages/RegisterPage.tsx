@@ -2,33 +2,25 @@ import { useNavigate } from 'react-router-dom';
 import AuthTemplate from '../components/templates/AuthTemplate';
 import RegisterForm from '../components/organisms/RegisterForm';
 import { ROUTE_PATHS } from '../../../core/routes/routeNames';
-import { useRegistration } from '../hooks';
-import formImage from '../../../core/assets/image/form_image.svg';
 
 const RegisterPage = () => {
-    const navigate = useNavigate();
-    const { submitRegistration, isLoading, error } = useRegistration();
+  const navigate = useNavigate();
 
-    const handleRegister = async (userData) => {
-        const result = await submitRegistration(userData);
+  const handleRegister = (userData: any) => {
+    console.log('Register submitted with:', userData);
+    // For now, just navigate to verify OTP page
+    navigate(ROUTE_PATHS.VERIFY_OTP);
+  };
 
-        if (result.success) {
-            // Navigate to OTP verification page with all user data for resend
-            navigate(ROUTE_PATHS.VERIFY_OTP, { 
-                state: userData
-            });
-        }
-    };
-
-    return (
-        <AuthTemplate imageSrc={formImage}>
-            <RegisterForm 
-                onSubmit={handleRegister} 
-                loading={isLoading} 
-                error={error} 
-            />
-        </AuthTemplate>
-    );
+  return (
+    <AuthTemplate>
+      <RegisterForm 
+        onSubmit={handleRegister}
+        loading={false}
+        error={null}
+      />
+    </AuthTemplate>
+  );
 };
 
 export default RegisterPage;

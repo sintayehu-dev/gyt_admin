@@ -1,10 +1,7 @@
+// Auth Pages - UI Only
 export { default as LoginPage } from './pages/LoginPage';
 export { default as RegisterPage } from './pages/RegisterPage';
 export { default as ResetPasswordPage } from './pages/ResetPasswordPage';
 export { default as CheckEmailPage } from './pages/CheckEmailPage';
 export { default as SetNewPasswordPage } from './pages/SetNewPasswordPage';
 export { default as VerifyOTPPage } from './pages/VerifyOTPPage';
-export { authAPI } from './services/auth.api';
-export { AuthProvider } from './context/AuthContext';
-export { default as useAuth } from './hooks/useAuth';
-export { default as usePasswordRecovery } from './hooks/usePasswordRecovery';

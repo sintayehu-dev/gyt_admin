@@ -4,7 +4,11 @@ import BackButton from '../../../../core/components/atoms/BackButton';
 import { ROUTE_PATHS } from '../../../../core/routes/routeNames';
 import './CheckEmailForm.css';
 
-const CheckEmailForm = ({ email }) => {
+interface CheckEmailFormProps {
+    email: string;
+}
+
+const CheckEmailForm = ({ email }: CheckEmailFormProps) => {
     const navigate = useNavigate();
 
     const handleOpenGmail = () => {

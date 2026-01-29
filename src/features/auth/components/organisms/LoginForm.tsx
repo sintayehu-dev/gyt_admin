@@ -1,33 +1,49 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, ChangeEvent, FormEvent } from 'react';
 import './LoginForm.css';
 import Button from '../../../../core/components/atoms/Button';
 import InputField from '../../../../core/components/molecules/InputField';
 import PasswordInput from '../../../../core/components/molecules/PasswordInput';
-import { ROUTE_PATHS } from '../../../../core/routes/routeNames';
 
-const LoginForm = ({ onSubmit, onGoogleLogin, loading = false, error = null }) => {
-  const [formData, setFormData] = useState({
+interface LoginFormProps {
+  onSubmit: (data: { email: string; password: string; rememberMe: boolean }) => void;
+  onGoogleLogin?: () => void;
+  loading?: boolean;
+  error?: string | null;
+}
+
+interface FormData {
+  email: string;
+  password: string;
+  rememberMe: boolean;
+}
+
+interface FormErrors {
+  email?: string;
+  password?: string;
+}
+
+const LoginForm = ({ onSubmit, onGoogleLogin, loading = false, error = null }: LoginFormProps) => {
+  const [formData, setFormData] = useState<FormData>({
     email: '',
     password: '',
     rememberMe: false,
   });
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<FormErrors>({});
 
-  const handleChange = (e) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({ 
       ...prev, 
       [name]: type === 'checkbox' ? checked : value 
     }));
     // Clear error when user types
-    if (errors[name]) {
+    if (errors[name as keyof FormErrors]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }
   };
 
-  const validate = () => {
-    const newErrors = {};
+  const validate = (): FormErrors => {
+    const newErrors: FormErrors = {};
 
     if (!formData.email) {
       newErrors.email = 'Email is required';
@@ -42,15 +58,19 @@ const LoginForm = ({ onSubmit, onGoogleLogin, loading = false, error = null }) =
     return newErrors;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    console.log('Login form submitted with data:', formData);
 
     const newErrors = validate();
     if (Object.keys(newErrors).length > 0) {
+      console.log('Validation errors:', newErrors);
       setErrors(newErrors);
       return;
     }
 
+    console.log('Calling onSubmit with:', formData);
     onSubmit(formData);
   };
 

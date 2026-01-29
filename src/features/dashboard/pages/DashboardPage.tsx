@@ -1,273 +1,208 @@
 /**
  * DashboardPage Component
  * 
- * Main dashboard view for the admin panel.
+ * Main dashboard view for the cinema admin panel.
  * 
  * @component
  * @returns {JSX.Element} The dashboard page
  */
 
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import './DashboardPage.css';
 
 const DashboardPage = () => {
 
   const statCards = [
     {
-      title: 'Ratings',
-      value: '4.5/5',
-      change: '8.5% Up from yesterday',
+      title: 'Weekly Revenue',
+      value: '$24,500',
+      change: '+12.5%',
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-          <circle cx="9" cy="7" r="4" />
-          <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          <rect x="2" y="5" width="20" height="14" rx="2" />
+          <line x1="2" y1="10" x2="22" y2="10" />
         </svg>
       ),
-      bgColor: '#E8E7FF'
+      bgColor: '#D1FAE5',
+      iconColor: '#10B981',
+      changeColor: '#10B981'
     },
     {
-      title: 'Ratings',
-      value: '4.5/5',
-      change: '8.5% Up from yesterday',
+      title: 'Tickets Sold',
+      value: '1,200',
+      change: '+8%',
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <circle cx="12" cy="12" r="10" />
-          <polyline points="12 6 12 12 16 14" />
+          <path d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 0 0-2 2v3a2 2 0 1 1 0 4v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3a2 2 0 1 1 0-4V7a2 2 0 0 0-2-2H5z" />
         </svg>
       ),
-      bgColor: '#FFE8E8'
+      bgColor: '#E9D5FF',
+      iconColor: '#8B5CF6',
+      changeColor: '#8B5CF6'
     },
     {
-      title: 'Ratings',
-      value: '4.5/5',
-      change: '8.5% Up from yesterday',
+      title: 'Active Movies',
+      value: '14',
+      change: '0%',
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-          <circle cx="12" cy="7" r="4" />
+          <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18" />
+          <line x1="7" y1="2" x2="7" y2="22" />
+          <line x1="17" y1="2" x2="17" y2="22" />
+          <line x1="2" y1="12" x2="22" y2="12" />
         </svg>
       ),
-      bgColor: '#FFF4E0'
+      bgColor: '#DBEAFE',
+      iconColor: '#3B82F6',
+      changeColor: '#6B7280'
     },
     {
-      title: 'Ratings',
-      value: '4.5/5',
-      change: '8.5% Up from yesterday',
+      title: 'Total Halls',
+      value: '8',
+      change: '-2%',
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
         </svg>
       ),
-      bgColor: '#E0FFF4'
+      bgColor: '#FED7AA',
+      iconColor: '#F97316',
+      changeColor: '#EF4444'
     },
   ];
 
-  const barChartData = [
-    { name: '1 Aug', value: 65 },
-    { name: '8 Aug', value: 85 },
-    { name: '15 Aug', value: 120 },
-    { name: '22 Aug', value: 90 },
-    { name: '29 Aug', value: 110 },
-    { name: '5 Sep', value: 140 },
-  ];
-
-  const pieChartData = [
-    { name: 'Lorem', value: 60, color: '#10B981' },
-    { name: 'Lorem', value: 15, color: '#EF4444' },
-    { name: 'Lorem', value: 25, color: '#F59E0B' },
-  ];
-
-  const newUsers = [
+  const recentBookings = [
     {
-      name: 'Bonnie Tashiga',
-      phone: '0965432167',
-      role: 'Driver',
-      dateJoined: '12-Oct-2025',
-      status: 'Online',
+      customer: 'John Doe',
+      movie: 'Interstellar (IMAX)',
+      time: '2m ago',
+      seats: '03',
+      status: 'CONFIRMED',
       avatar: 'https://i.pravatar.cc/150?img=1'
     },
     {
-      name: 'John Doe',
-      phone: '0965432168',
-      role: 'Driver',
-      dateJoined: '13-Oct-2025',
-      status: 'Offline',
+      customer: 'Sarah Wilson',
+      movie: 'Dune: Part Two',
+      time: '18m ago',
+      seats: '01',
+      status: 'CONFIRMED',
       avatar: 'https://i.pravatar.cc/150?img=2'
     },
     {
-      name: 'Jane Smith',
-      phone: '0965432169',
-      role: 'Admin',
-      dateJoined: '14-Oct-2025',
-      status: 'Online',
+      customer: 'Michael Scott',
+      movie: 'The Batman',
+      time: '42m ago',
+      seats: '02',
+      status: 'PENDING',
       avatar: 'https://i.pravatar.cc/150?img=3'
     },
   ];
 
+  const weekDays = ['M', 'T', 'W', 'T', 'F', 'S'];
+
   return (
     <div className="dashboard-page">
-      {/* Page Title */}
-      <h1 className="dashboard-title text-h3">Dashboard</h1>
-
       {/* Stats Cards */}
-      <div className="stats-grid">
+      <div className="dashboard-stats">
         {statCards.map((card, index) => (
-          <div key={index} className="stat-card">
-            <div className="stat-card__content">
-              <div className="stat-card__header">
-                <div>
-                  <p className="stat-card__label text-body-4">This Month</p>
-                  <h3 className="stat-card__value text-h5">{card.value}</h3>
-                </div>
-                <div className="stat-card__icon" style={{ backgroundColor: card.bgColor }}>
-                  {card.icon}
-                </div>
+          <div key={index} className="dashboard-stat-card">
+            <div className="dashboard-stat-card__icon" style={{ backgroundColor: card.bgColor }}>
+              <div style={{ color: card.iconColor }}>
+                {card.icon}
               </div>
-              <p className="stat-card__change text-body-5">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="2">
-                  <polyline points="18 15 12 9 6 15" />
-                </svg>
-                {card.change}
-              </p>
+            </div>
+            <div className="dashboard-stat-card__content">
+              <p className="dashboard-stat-card__label">{card.title}</p>
+              <h3 className="dashboard-stat-card__value">{card.value}</h3>
+            </div>
+            <div className="dashboard-stat-card__change" style={{ color: card.changeColor }}>
+              {card.change}
             </div>
           </div>
         ))}
       </div>
 
-      {/* Charts Section */}
-      <div className="charts-section">
-        {/* Bar Chart */}
-        <div className="chart-card chart-card--large">
-          <div className="chart-card__header">
-            <div>
-              <h3 className="chart-card__title text-h5">Title</h3>
-              <p className="chart-card__subtitle text-body-4">Lorem ipsum</p>
+      {/* Main Content Grid */}
+      <div className="dashboard-grid">
+        {/* Recent Bookings */}
+        <div className="dashboard-card dashboard-card--large">
+          <div className="dashboard-card__header">
+            <h3 className="dashboard-card__title">Recent Bookings</h3>
+            <button className="dashboard-export-btn">Export Data</button>
+          </div>
+          
+          <div className="dashboard-table-wrapper">
+            <table className="dashboard-table">
+              <thead>
+                <tr>
+                  <th>CUSTOMER</th>
+                  <th>MOVIE</th>
+                  <th>TIME</th>
+                  <th>SEATS</th>
+                  <th>STATUS</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recentBookings.map((booking, index) => (
+                  <tr key={index}>
+                    <td>
+                      <div className="dashboard-customer">
+                        <img src={booking.avatar} alt={booking.customer} className="dashboard-avatar" />
+                        <span>{booking.customer}</span>
+                      </div>
+                    </td>
+                    <td>{booking.movie}</td>
+                    <td className="dashboard-time">{booking.time}</td>
+                    <td>{booking.seats}</td>
+                    <td>
+                      <span className={`dashboard-status dashboard-status--${booking.status.toLowerCase()}`}>
+                        {booking.status}
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Right Column */}
+        <div className="dashboard-sidebar">
+          {/* Occupancy Rate */}
+          <div className="dashboard-card">
+            <div className="dashboard-card__header">
+              <h3 className="dashboard-card__title">Occupancy Rate</h3>
+              <button className="dashboard-menu-btn">⋮</button>
             </div>
-            <button className="chart-card__filter text-body-4">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <rect x="3" y="3" width="7" height="7" />
-                <rect x="14" y="3" width="7" height="7" />
-                <rect x="14" y="14" width="7" height="7" />
-                <rect x="3" y="14" width="7" height="7" />
-              </svg>
-              Today
+            <div className="dashboard-calendar">
+              {weekDays.map((day, index) => (
+                <div key={index} className="dashboard-calendar__day">
+                  {day}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* New Schedule Card */}
+          <div className="dashboard-schedule-card">
+            <h3 className="dashboard-schedule-card__title">New Schedule</h3>
+            <p className="dashboard-schedule-card__text">
+              Easily plan upcoming movie screenings for the next week.
+            </p>
+            <button className="dashboard-schedule-card__btn">
+              Create Now
             </button>
           </div>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={barChartData}>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E5E7EB" />
-              <XAxis
-                dataKey="name"
-                axisLine={false}
-                tickLine={false}
-                tick={{ fill: '#9CA3AF', fontSize: 12 }}
-              />
-              <YAxis
-                axisLine={false}
-                tickLine={false}
-                tick={{ fill: '#9CA3AF', fontSize: 12 }}
-              />
-              <Tooltip />
-              <Bar dataKey="value" fill="#EF4444" radius={[8, 8, 0, 0]} barSize={32} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Pie Chart */}
-        <div className="chart-card">
-          <h3 className="chart-card__title text-h5">Lorem Ipsum</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <PieChart>
-              <Pie
-                data={pieChartData}
-                cx="50%"
-                cy="50%"
-                innerRadius={60}
-                outerRadius={90}
-                paddingAngle={0}
-                dataKey="value"
-              >
-                {pieChartData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Pie>
-            </PieChart>
-          </ResponsiveContainer>
-          <div className="pie-chart-legend">
-            {pieChartData.map((entry, index) => (
-              <div key={index} className="legend-item">
-                <div className="legend-color" style={{ backgroundColor: entry.color }}></div>
-                <span className="legend-label text-body-4">{entry.value}% {entry.name}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </div>
 
-      {/* New Users Table */}
-      <div className="table-card">
-        <h3 className="table-card__title text-h5">New Users</h3>
-        <div className="table-wrapper">
-          <table className="users-table">
-            <thead>
-              <tr>
-                <th className="text-body-5">NAME</th>
-                <th className="text-body-5">PHONE NUMBER</th>
-                <th className="text-body-5">ROLE</th>
-                <th className="text-body-5">DATE JOINED</th>
-                <th className="text-body-5">STATUS</th>
-                <th className="text-body-5">ACTIONS</th>
-              </tr>
-            </thead>
-            <tbody>
-              {newUsers.map((user, index) => (
-                <tr key={index}>
-                  <td className="text-body-3">
-                    <div className="user-cell">
-                      <img src={user.avatar} alt={user.name} className="user-avatar" />
-                      <span>{user.name}</span>
-                    </div>
-                  </td>
-                  <td className="text-body-3">{user.phone}</td>
-                  <td>
-                    <span className="role-badge text-body-5">{user.role}</span>
-                  </td>
-                  <td className="text-body-3">{user.dateJoined}</td>
-                  <td>
-                    <span className={`status-badge text-body-5 ${user.status === 'Online' ? 'status-badge--online' : 'status-badge--offline'}`}>
-                      {user.status}
-                    </span>
-                  </td>
-                  <td>
-                    <div className="action-buttons">
-                      <button className="action-btn action-btn--view">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                          <circle cx="12" cy="12" r="3" />
-                        </svg>
-                      </button>
-                      <button className="action-btn action-btn--edit">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                        </svg>
-                      </button>
-                      <button className="action-btn action-btn--delete">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <polyline points="3 6 5 6 21 6" />
-                          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                        </svg>
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
+      {/* Floating Action Button */}
+      <button className="dashboard-fab" aria-label="Add new">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+          <line x1="12" y1="5" x2="12" y2="19" />
+          <line x1="5" y1="12" x2="19" y2="12" />
+        </svg>
+      </button>
     </div>
   );
 };

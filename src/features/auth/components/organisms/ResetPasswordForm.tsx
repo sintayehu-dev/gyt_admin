@@ -1,25 +1,39 @@
-import { useState } from 'react';
+import { useState, ChangeEvent, FormEvent } from 'react';
 import Button from '../../../../core/components/atoms/Button';
 import BackButton from '../../../../core/components/atoms/BackButton';
 import InputField from '../../../../core/components/molecules/InputField';
 import './ResetPasswordForm.css';
 
-const ResetPasswordForm = ({ onSubmit, loading = false, error = null }) => {
-    const [formData, setFormData] = useState({
+interface ResetPasswordFormProps {
+  onSubmit: (data: { email: string }) => void;
+  loading?: boolean;
+  error?: string | null;
+}
+
+interface FormData {
+  email: string;
+}
+
+interface FormErrors {
+  email?: string;
+}
+
+const ResetPasswordForm = ({ onSubmit, loading = false, error = null }: ResetPasswordFormProps) => {
+    const [formData, setFormData] = useState<FormData>({
         email: '',
     });
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState<FormErrors>({});
 
-    const handleChange = (e) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
-        if (errors[name]) {
+        if (errors[name as keyof FormErrors]) {
             setErrors(prev => ({ ...prev, [name]: '' }));
         }
     };
 
-    const validate = () => {
-        const newErrors = {};
+    const validate = (): FormErrors => {
+        const newErrors: FormErrors = {};
 
         if (!formData.email) {
             newErrors.email = 'Email is required';
@@ -30,7 +44,7 @@ const ResetPasswordForm = ({ onSubmit, loading = false, error = null }) => {
         return newErrors;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const newErrors = validate();
