@@ -6,6 +6,9 @@ import MovieDetailPage from '../../features/movies/pages/MovieDetailPage';
 import { GenresPage } from '../../features/genres';
 import { DirectorsPage } from '../../features/directors';
 import { StarsPage } from '../../features/stars';
+import { SchedulesPage } from '../../features/schedules';
+import ScheduleDetailPage from '../../features/schedules/pages/ScheduleDetailPage';
+import { TicketsPage } from '../../features/tickets';
 import DashboardLayout from '../layouts/DashboardLayout';
 import ProtectedRoute from './ProtectedRoute';
 import { ROUTE_PATHS } from './routeNames';
@@ -77,6 +80,18 @@ const router = createBrowserRouter([
       {
         path: ROUTE_PATHS.STARS,
         element: <StarsPage />,
+      },
+      {
+        path: ROUTE_PATHS.SCHEDULES,
+        element: <SchedulesPage />,
+      },
+      {
+        path: ROUTE_PATHS.SCHEDULE_DETAIL,
+        element: <ScheduleDetailPage />,
+      },
+      {
+        path: ROUTE_PATHS.TICKETS,
+        element: <TicketsPage />,
       },
       {
         path: ROUTE_PATHS.MOVIE_DETAIL,

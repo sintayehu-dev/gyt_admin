@@ -1,0 +1,48 @@
+.schedules-page__controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.schedules-page__hall {
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.schedules-page__date-time {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.schedules-page__date {
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.schedules-page__time {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.schedules-page__seats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.schedules-page__seats-available {
+  font-weight: 500;
+  color: var(--color-success);
+}
+
+.schedules-page__seats-total {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.schedules-page__price {
+  font-weight: 600;
+  color: var(--color-primary);
+}

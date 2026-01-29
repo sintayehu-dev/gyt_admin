@@ -21,6 +21,7 @@ export const ROUTE_PATHS = {
     STARS: '/stars',
     // Schedules
     SCHEDULES: '/schedules',
+    SCHEDULE_DETAIL: '/schedules/:id',
     // Tickets
     TICKETS: '/tickets',
     // Settings
@@ -43,6 +44,7 @@ export const ROUTE_NAMES = {
     DIRECTORS: 'Directors',
     STARS: 'Stars',
     SCHEDULES: 'Schedules',
+    SCHEDULE_DETAIL: 'Schedule Detail',
     TICKETS: 'Tickets',
     SETTINGS: 'Settings',
     ERROR: 'Error',
