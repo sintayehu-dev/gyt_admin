@@ -30,7 +30,6 @@ interface AuthProviderProps {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const auth = useAuth();
 
-  // Check authentication on mount
   useEffect(() => {
     auth.checkAuth();
   }, []);
@@ -41,6 +40,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     </AuthContext.Provider>
   );
 };
+
 export const useAuthContext = () => {
   const context = useContext(AuthContext);
   

@@ -26,9 +26,6 @@ const useAuth = () => {
     error: null,
   });
 
-  /**
-   * Login function
-   */
   const login = useCallback(async (credentials: { email: string; password: string }) => {
     setState(prev => ({ ...prev, isLoading: true, error: null }));
 
@@ -38,11 +35,9 @@ const useAuth = () => {
       if (result.success) {
         const { user, accessToken, refreshToken } = result.data;
 
-        // Store tokens
         tokenRefreshService.setAccessToken(accessToken);
         tokenRefreshService.setRefreshToken(refreshToken);
 
-        // Store user data
         const userData = {
           id: user.uuid,
           email: user.email,
@@ -51,7 +46,6 @@ const useAuth = () => {
         };
         tokenRefreshService.setUserData(userData);
 
-        // Update state
         setState({
           user,
           isAuthenticated: true,
@@ -82,9 +76,6 @@ const useAuth = () => {
     }
   }, []);
 
-  /**
-   * Logout function
-   */
   const logout = useCallback(() => {
     tokenRefreshService.clearUserSession();
     setState({
@@ -95,9 +86,6 @@ const useAuth = () => {
     });
   }, []);
 
-  /**
-   * Check authentication status
-   */
   const checkAuth = useCallback(() => {
     const accessToken = tokenRefreshService.getAccessToken();
     const userData = tokenRefreshService.getUserData();
@@ -114,21 +102,15 @@ const useAuth = () => {
     return false;
   }, []);
 
-  /**
-   * Clear error
-   */
   const clearError = useCallback(() => {
     setState(prev => ({ ...prev, error: null }));
   }, []);
 
   return {
-    // State
     user: state.user,
     isAuthenticated: state.isAuthenticated,
     isLoading: state.isLoading,
     error: state.error,
-    
-    // Actions
     login,
     logout,
     checkAuth,

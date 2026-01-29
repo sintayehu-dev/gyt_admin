@@ -1,4 +1,7 @@
 import { ReactNode } from 'react';
+import { Navigate } from 'react-router-dom';
+import { useAuthContext } from '../../features/auth/context/AuthContext';
+import { ROUTE_PATHS } from './routeNames';
 
 interface ProtectedRouteProps {
     children: ReactNode;
@@ -6,8 +9,12 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute = ({ children, requireAuth = true }: ProtectedRouteProps) => {
-    // For now, just render children without authentication check
-    // This is UI-only mode, no auth integration
+    const { isAuthenticated } = useAuthContext();
+
+    if (requireAuth && !isAuthenticated) {
+        return <Navigate to={ROUTE_PATHS.LOGIN} replace />;
+    }
+
     return <>{children}</>;
 };
 

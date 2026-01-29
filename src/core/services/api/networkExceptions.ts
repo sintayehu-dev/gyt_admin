@@ -1,7 +1,4 @@
-/**
- * Network Exceptions - Centralized error handling
- * Handles all types of network errors and provides user-friendly messages
- */
+import { AxiosError } from 'axios';
 
 export const NetworkExceptionType = {
   CONNECTION_ERROR: 'CONNECTION_ERROR',
@@ -23,67 +20,49 @@ export const NetworkExceptionType = {
   DEFAULT_ERROR: 'DEFAULT_ERROR',
   UNEXPECTED_ERROR: 'UNEXPECTED_ERROR',
   BAD_CERTIFICATE: 'BAD_CERTIFICATE',
-};
+} as const;
+
+export type NetworkExceptionTypeKeys = keyof typeof NetworkExceptionType;
 
 export class NetworkExceptions {
-  constructor(type, message = '') {
+  type: string;
+  message: string;
+
+  constructor(type: string, message = '') {
     this.type = type;
     this.message = message;
   }
 
-  /**
-   * Extract raw error message from error object
-   * @param {*} error - Error object (can be axios error or NetworkException)
-   * @returns {string} - Raw error message
-   */
-  static getRawErrorMessage(error) {
-    // Handle axios errors with response data
+  static getRawErrorMessage(error: any): string {
     if (error?.response?.data) {
       try {
         const errorData = error.response.data;
 
-        // For JSON error responses
         if (typeof errorData === 'object' && errorData !== null) {
-          // Return error field if it exists
           if (errorData.error) {
             return String(errorData.error);
-          }
-          // Return message field if it exists
-          else if (errorData.message) {
+          } else if (errorData.message) {
             return String(errorData.message);
-          }
-          // Return the entire JSON as a string
-          else {
+          } else {
             return JSON.stringify(errorData);
           }
-        }
-        // For string error responses
-        else if (typeof errorData === 'string') {
+        } else if (typeof errorData === 'string') {
           return errorData;
-        }
-        // For other types, convert to string
-        else {
+        } else {
           return String(errorData);
         }
       } catch (e) {
         return error.toString();
       }
-    }
-    // Handle NetworkExceptions instances
-    else if (error instanceof NetworkExceptions) {
+    } else if (error instanceof NetworkExceptions) {
       return NetworkExceptions._extractMessageFromNetworkExceptions(error);
     }
 
-    // Fallback
     return error?.message || error?.toString() || 'Unknown error occurred';
   }
 
-  /**
-   * Extract message from NetworkExceptions instance
-   * @private
-   */
-  static _extractMessageFromNetworkExceptions(networkException) {
-    const messages = {
+  private static _extractMessageFromNetworkExceptions(networkException: NetworkExceptions): string {
+    const messages: Record<string, string> = {
       [NetworkExceptionType.CONNECTION_ERROR]: 'Connection error',
       [NetworkExceptionType.REQUEST_CANCELLED]: 'Request cancelled',
       [NetworkExceptionType.UNAUTHORISED_REQUEST]: 'Unauthorized request',
@@ -108,35 +87,29 @@ export class NetworkExceptions {
     return messages[networkException.type] || 'Unknown error';
   }
 
-  /**
-   * Convert axios error to NetworkException
-   * @param {*} error - Error object from axios or other source
-   * @returns {NetworkExceptions}
-   */
-  static getException(error) {
+  static getException(error: any): NetworkExceptions {
     try {
-      // Handle axios errors
-      if (error.isAxiosError) {
-        // Network-related exceptions (no response)
-        if (!error.response) {
-          if (error.code === 'ECONNABORTED') {
+      const axiosError = error as AxiosError;
+
+      if (axiosError.isAxiosError) {
+        if (!axiosError.response) {
+          if (axiosError.code === 'ECONNABORTED') {
             return new NetworkExceptions(NetworkExceptionType.REQUEST_TIMEOUT);
           }
-          if (error.code === 'ERR_NETWORK') {
+          if (axiosError.code === 'ERR_NETWORK') {
             return new NetworkExceptions(NetworkExceptionType.NO_INTERNET_CONNECTION);
           }
-          if (error.message?.includes('Network Error')) {
+          if (axiosError.message?.includes('Network Error')) {
             return new NetworkExceptions(NetworkExceptionType.NO_INTERNET_CONNECTION);
           }
-          if (error.message?.includes('timeout')) {
+          if (axiosError.message?.includes('timeout')) {
             return new NetworkExceptions(NetworkExceptionType.REQUEST_TIMEOUT);
           }
           return new NetworkExceptions(NetworkExceptionType.CONNECTION_ERROR);
         }
 
-        // Handle response-based errors
-        const statusCode = error.response.status;
-        const backendError = NetworkExceptions._extractBackendErrorMessage(error.response.data);
+        const statusCode = axiosError.response.status;
+        const backendError = NetworkExceptions._extractBackendErrorMessage(axiosError.response.data);
 
         switch (statusCode) {
           case 400:
@@ -166,22 +139,18 @@ export class NetworkExceptions {
         }
       }
 
-      // Handle request cancellation
       if (error.name === 'CanceledError' || error.message?.includes('cancel')) {
         return new NetworkExceptions(NetworkExceptionType.REQUEST_CANCELLED);
       }
 
-      // Handle format exceptions
       if (error instanceof SyntaxError || error.name === 'SyntaxError') {
         return new NetworkExceptions(NetworkExceptionType.FORMAT_EXCEPTION);
       }
 
-      // Handle type errors
       if (error.message?.includes('is not a subtype of') || error.message?.includes('type')) {
         return new NetworkExceptions(NetworkExceptionType.UNABLE_TO_PROCESS);
       }
 
-      // Default unexpected error
       return new NetworkExceptions(
         NetworkExceptionType.UNEXPECTED_ERROR,
         error.message || 'An unexpected error occurred'
@@ -191,15 +160,10 @@ export class NetworkExceptions {
     }
   }
 
-  /**
-   * Extract backend error message from response data
-   * @private
-   */
-  static _extractBackendErrorMessage(data) {
+  private static _extractBackendErrorMessage(data: any): string {
     if (!data) return 'Unknown error occurred';
 
     try {
-      // For JSON error responses
       if (typeof data === 'object' && data !== null) {
         if (data.error) {
           return String(data.error);
@@ -208,10 +172,7 @@ export class NetworkExceptions {
         } else {
           return JSON.stringify(data);
         }
-      }
-      // For string error responses
-      else if (typeof data === 'string' && data.length > 0) {
-        // Try to parse as JSON first
+      } else if (typeof data === 'string' && data.length > 0) {
         try {
           const jsonData = JSON.parse(data);
           if (jsonData.error) {
@@ -221,7 +182,6 @@ export class NetworkExceptions {
           }
           return data;
         } catch {
-          // If not valid JSON, return the string as is
           return data;
         }
       } else {
@@ -232,11 +192,7 @@ export class NetworkExceptions {
     }
   }
 
-  /**
-   * Get user-friendly error message
-   * @returns {string}
-   */
-  getErrorMessage() {
+  getErrorMessage(): string {
     return NetworkExceptions._extractMessageFromNetworkExceptions(this);
   }
 }

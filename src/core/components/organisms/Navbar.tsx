@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuthContext } from '../../../features/auth/context/AuthContext';
 import { ROUTE_PATHS } from '../../routes/routeNames';
 import './Navbar.css';
 
@@ -9,6 +10,7 @@ interface NavbarProps {
 
 const Navbar = ({ onMenuClick }: NavbarProps) => {
     const navigate = useNavigate();
+    const { user, logout } = useAuthContext();
     const [showNotifications, setShowNotifications] = useState(false);
     const [showProfile, setShowProfile] = useState(false);
 
@@ -19,15 +21,13 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
     ];
 
     const handleLogout = () => {
-        console.log('Logout clicked');
-        // For now, just navigate to login
+        logout();
         navigate(ROUTE_PATHS.LOGIN);
     };
 
     return (
         <header className="navbar">
             <div className="navbar__container">
-                {/* Left Section - Menu Button */}
                 <div className="navbar__left">
                     <button
                         className="navbar__menu-btn"
@@ -38,7 +38,6 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                     </button>
                 </div>
 
-                {/* Right Section - Actions */}
                 <div className="navbar__right">
                     <div className="navbar__item">
                         <button
@@ -99,7 +98,7 @@ const Navbar = ({ onMenuClick }: NavbarProps) => {
                                     <circle cx="12" cy="7" r="4" />
                                 </svg>
                             </span>
-                            <span className="navbar__username text-body-2">Username</span>
+                            <span className="navbar__username text-body-2">{user?.name || 'User'}</span>
                             <span className="navbar__arrow">
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                                     <polyline points="6 9 12 15 18 9" />

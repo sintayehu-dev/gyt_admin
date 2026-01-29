@@ -1,18 +1,30 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { tokenInterceptor } from './tokenInterceptor';
 import env from '../../config/env';
 
+interface ClientOptions {
+  requireAuth?: boolean;
+  isMultipart?: boolean;
+}
+
 class HttpService {
-  client({ requireAuth = false, isMultipart = false } = {}) {
+  client({ requireAuth = false, isMultipart = false }: ClientOptions = {}): AxiosInstance {
     const baseURL = env.apiUrl;
+
+    const headers: Record<string, string> = {
+      'Accept': 'application/json',
+      'Content-Type': isMultipart ? 'multipart/form-data' : 'application/json',
+    };
+
+    if (baseURL.includes('ngrok')) {
+      headers['ngrok-skip-browser-warning'] = 'true';
+    }
 
     const axiosInstance = axios.create({
       baseURL,
       timeout: 60000,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': isMultipart ? 'multipart/form-data' : 'application/json',
-      },
+      headers,
+      withCredentials: false,
     });
 
     if (requireAuth) {
@@ -26,7 +38,7 @@ class HttpService {
     return axiosInstance;
   }
 
-  _addLoggingInterceptor(axiosInstance) {
+  private _addLoggingInterceptor(axiosInstance: AxiosInstance): void {
     axiosInstance.interceptors.request.use(
       (config) => {
         return config;

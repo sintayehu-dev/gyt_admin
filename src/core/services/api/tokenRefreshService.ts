@@ -1,7 +1,24 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import env from '../../config/env';
 
+interface RefreshResponse {
+  access_token: string;
+  refresh_token: string;
+  user?: any;
+}
+
+interface JWTPayload {
+  exp?: number;
+  [key: string]: any;
+}
+
+type RefreshCallback = (token: string | null) => void;
+
 class TokenRefreshService {
+  private _isRefreshing: boolean;
+  private _refreshSubscribers: RefreshCallback[];
+  private _axiosClient: AxiosInstance;
+
   constructor() {
     this._isRefreshing = false;
     this._refreshSubscribers = [];
@@ -15,7 +32,7 @@ class TokenRefreshService {
     });
   }
 
-  async refreshAccessToken() {
+  async refreshAccessToken(): Promise<string | null> {
     if (this._isRefreshing) {
       return new Promise((resolve) => {
         this._refreshSubscribers.push((token) => {
@@ -38,7 +55,7 @@ class TokenRefreshService {
 
       console.log('Attempting to refresh access token...');
 
-      const response = await this._axiosClient.post('/auth/refresh', {
+      const response = await this._axiosClient.post<RefreshResponse>('/auth/refresh', {
         refresh_token: refreshToken,
       });
 
@@ -62,7 +79,7 @@ class TokenRefreshService {
         this._onRefreshFinished(null);
         return null;
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Token refresh error:', error.message);
 
       if (error.response?.status === 401 || error.response?.status === 403) {
@@ -76,12 +93,12 @@ class TokenRefreshService {
     }
   }
 
-  _onRefreshFinished(token) {
+  private _onRefreshFinished(token: string | null): void {
     this._refreshSubscribers.forEach((callback) => callback(token));
     this._refreshSubscribers = [];
   }
 
-  isAccessTokenExpired() {
+  isAccessTokenExpired(): boolean {
     const token = this.getAccessToken();
     if (!token) return true;
 
@@ -98,9 +115,14 @@ class TokenRefreshService {
     return false;
   }
 
-  _decodeJWT(token) {
+  private _decodeJWT(token: string): JWTPayload | null {
     try {
-      const base64Url = token.split('.')[1];
+      const parts = token.split('.');
+      if (parts.length !== 3 || !parts[1]) {
+        return null;
+      }
+      
+      const base64Url = parts[1];
       const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
       const jsonPayload = decodeURIComponent(
         atob(base64)
@@ -115,7 +137,7 @@ class TokenRefreshService {
     }
   }
 
-  async getValidAccessToken() {
+  async getValidAccessToken(): Promise<string | null> {
     const currentToken = this.getAccessToken();
 
     if (!currentToken) {
@@ -131,35 +153,35 @@ class TokenRefreshService {
     return currentToken;
   }
 
-  async clearUserSession() {
+  async clearUserSession(): Promise<void> {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('user');
     console.log('All tokens cleared');
   }
 
-  getAccessToken() {
+  getAccessToken(): string | null {
     return localStorage.getItem('accessToken');
   }
 
-  setAccessToken(token) {
+  setAccessToken(token: string): void {
     localStorage.setItem('accessToken', token);
   }
 
-  getRefreshToken() {
+  getRefreshToken(): string | null {
     return localStorage.getItem('refreshToken');
   }
 
-  setRefreshToken(token) {
+  setRefreshToken(token: string): void {
     localStorage.setItem('refreshToken', token);
   }
 
-  getUserData() {
+  getUserData(): any | null {
     const userData = localStorage.getItem('user');
     return userData ? JSON.parse(userData) : null;
   }
 
-  setUserData(user) {
+  setUserData(user: any): void {
     localStorage.setItem('user', JSON.stringify(user));
   }
 }

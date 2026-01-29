@@ -1,6 +1,6 @@
 const env = {
   appTitle: import.meta.env.VITE_APP_TITLE || 'NEST Admin',
-  apiUrl: 'https://ccb4ef4f6431.ngrok-free.app',
+  apiUrl: import.meta.env.VITE_API_URL || '/api',
   environment: import.meta.env.VITE_ENV || 'development',
   debug: import.meta.env.VITE_DEBUG === 'true',
 

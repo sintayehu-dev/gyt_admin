@@ -1,6 +1,5 @@
 /**
- * Auth DTOs (Data Transfer Objects)
- * Serialization/transformation of models for application use
+ * Auth DTOs
  */
 
 export interface UserDTO {
@@ -27,9 +26,6 @@ const formatDate = (dateString: string): string => {
   return `${day}-${month}-${year}`;
 };
 
-/**
- * Transform user model to DTO
- */
 export const transformUser = (user: any): UserDTO => {
   return {
     uuid: user.uuid || '',
@@ -41,9 +37,6 @@ export const transformUser = (user: any): UserDTO => {
   };
 };
 
-/**
- * Transform login response to DTO
- */
 export const transformLoginResponse = (response: any): LoginResponseDTO => {
   return {
     user: transformUser(response.user),
@@ -52,9 +45,6 @@ export const transformLoginResponse = (response: any): LoginResponseDTO => {
   };
 };
 
-/**
- * Serialize login request
- */
 export const serializeLoginRequest = (email: string, password: string) => {
   return {
     email,
