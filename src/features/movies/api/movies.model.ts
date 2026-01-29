@@ -41,3 +41,30 @@ export const MoviesListRequest = {
   language: '',
   isActive: true,
 };
+
+export const CreateMovieRequest = {
+  title: '',
+  description: '',
+  durationMinutes: 0,
+  releaseDate: '',
+  posterUrl: '',
+  trailerUrl: '',
+  language: '',
+  genres: [] as string[],
+  directors: [] as string[],
+  stars: [] as string[],
+};
+
+export const UpdateMovieRequest = {
+  title: '',
+  description: '',
+  durationMinutes: 0,
+  releaseDate: '',
+  posterUrl: '',
+  trailerUrl: '',
+  language: '',
+  isActive: true,
+  genres: [] as string[],
+  directors: [] as string[],
+  stars: [] as string[],
+};

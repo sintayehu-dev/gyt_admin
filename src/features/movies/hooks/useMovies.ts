@@ -11,6 +11,23 @@ export const movieKeys = {
   detail: (id: string) => [...movieKeys.details(), id],
 };
 
+interface CreateMovieData {
+  title: string;
+  description: string;
+  durationMinutes: number;
+  releaseDate: string;
+  posterUrl: string;
+  trailerUrl: string;
+  language: string;
+  genres: string[];
+  directors: string[];
+  stars: string[];
+}
+
+interface UpdateMovieData extends CreateMovieData {
+  isActive: boolean;
+}
+
 const useMovies = () => {
   const queryClient = useQueryClient();
 
@@ -71,12 +88,51 @@ const useMovies = () => {
     staleTime: 5 * 60 * 1000,
   });
 
+  const createMovieMutation = useMutation({
+    mutationFn: async (movieData: CreateMovieData) => {
+      console.log('[useMovies] Creating movie with data:', movieData);
+      const result = await moviesAPI.createMovie(movieData);
+      
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to create movie');
+      }
+      
+      console.log('[useMovies] Movie created successfully:', result.data);
+      return result.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: movieKeys.lists() });
+    },
+  });
+
+  const updateMovieMutation = useMutation({
+    mutationFn: async ({ uuid, movieData }: { uuid: string; movieData: UpdateMovieData }) => {
+      console.log('[useMovies] Updating movie:', uuid, 'with data:', movieData);
+      const result = await moviesAPI.updateMovie(uuid, movieData);
+      
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to update movie');
+      }
+      
+      console.log('[useMovies] Movie updated successfully:', result.data);
+      return result.data;
+    },
+    onSuccess: (data, variables) => {
+      queryClient.setQueryData(movieKeys.detail(variables.uuid), data);
+      queryClient.invalidateQueries({ queryKey: movieKeys.lists() });
+    },
+  });
+
   const deleteMovieMutation = useMutation({
     mutationFn: async (movieId: string) => {
+      console.log('[useMovies] Deleting movie:', movieId);
       const result = await moviesAPI.deleteMovie(movieId);
+      
       if (!result.success) {
         throw new Error(result.error || 'Failed to delete movie');
       }
+      
+      console.log('[useMovies] Movie deleted successfully');
       return result;
     },
     onSuccess: (_result, movieId) => {
@@ -98,6 +154,24 @@ const useMovies = () => {
     setPagination(prev => ({ ...prev, size, page: 0 }));
   }, []);
 
+  const createMovie = useCallback(async (movieData: CreateMovieData) => {
+    try {
+      const data = await createMovieMutation.mutateAsync(movieData);
+      return { success: true, data };
+    } catch (error) {
+      return { success: false, error: (error as Error).message };
+    }
+  }, [createMovieMutation]);
+
+  const updateMovie = useCallback(async (uuid: string, movieData: UpdateMovieData) => {
+    try {
+      const data = await updateMovieMutation.mutateAsync({ uuid, movieData });
+      return { success: true, data };
+    } catch (error) {
+      return { success: false, error: (error as Error).message };
+    }
+  }, [updateMovieMutation]);
+
   const deleteMovie = useCallback(async (movieId: string) => {
     try {
       const result = await deleteMovieMutation.mutateAsync(movieId);
@@ -117,7 +191,12 @@ const useMovies = () => {
     updatePage,
     updatePageSize,
     refetch,
+    createMovie,
+    updateMovie,
     deleteMovie,
+    isCreating: createMovieMutation.isPending,
+    isUpdating: updateMovieMutation.isPending,
+    isDeleting: deleteMovieMutation.isPending,
   };
 };
 

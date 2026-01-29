@@ -10,6 +10,8 @@ export { default as LoadingSpinner } from './atoms/LoadingSpinner';
 export { default as InputField } from './molecules/InputField';
 export { default as PasswordInput } from './molecules/PasswordInput';
 export { default as ActionButtons } from './molecules/ActionButtons';
+export { default as Modal } from './molecules/Modal';
+export { default as ConfirmDialog } from './molecules/ConfirmDialog';
 
 // Templates
 export { default as AuthTemplate } from './templates/AuthTemplate';

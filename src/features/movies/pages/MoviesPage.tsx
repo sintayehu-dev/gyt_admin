@@ -5,6 +5,10 @@ import SearchInput from '../../../core/components/atoms/SearchInput';
 import Button from '../../../core/components/atoms/Button';
 import DataTable from '../../../core/components/organisms/DataTable';
 import ActionButtons from '../../../core/components/molecules/ActionButtons';
+import Modal from '../../../core/components/molecules/Modal';
+import ConfirmDialog from '../../../core/components/molecules/ConfirmDialog';
+import AddMovieForm, { MovieFormData } from '../components/organisms/AddMovieForm';
+import EditMovieForm, { UpdateMovieFormData } from '../components/organisms/EditMovieForm';
 import useMovies from '../hooks/useMovies';
 import { MovieDTO } from '../api/movies.dto';
 import { ROUTE_PATHS } from '../../../core/routes/routeNames';
@@ -19,10 +23,20 @@ const MoviesPage = () => {
     error, 
     updateSearch, 
     updatePage, 
-    updatePageSize 
+    updatePageSize,
+    createMovie,
+    updateMovie,
+    deleteMovie,
+    isCreating,
+    isUpdating,
+    isDeleting,
   } = useMovies();
 
   const [searchTerm, setSearchTerm] = useState('');
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [selectedMovie, setSelectedMovie] = useState<MovieDTO | null>(null);
 
   const handleSearch = useCallback((value: string) => {
     setSearchTerm(value);
@@ -38,20 +52,78 @@ const MoviesPage = () => {
   }, [updatePageSize]);
 
   const handleAddNew = useCallback(() => {
-    console.log('Add new movie');
+    setIsAddModalOpen(true);
   }, []);
+
+  const handleCloseAddModal = useCallback(() => {
+    setIsAddModalOpen(false);
+  }, []);
+
+  const handleCloseEditModal = useCallback(() => {
+    setIsEditModalOpen(false);
+    setSelectedMovie(null);
+  }, []);
+
+  const handleCloseDeleteDialog = useCallback(() => {
+    setIsDeleteDialogOpen(false);
+    setSelectedMovie(null);
+  }, []);
+
+  const handleSubmitMovie = useCallback(async (movieData: MovieFormData) => {
+    const result = await createMovie(movieData);
+    
+    if (result.success) {
+      setIsAddModalOpen(false);
+      console.log('Movie created successfully:', result.data);
+    } else {
+      console.error('Failed to create movie:', result.error);
+      alert(`Failed to create movie: ${result.error}`);
+    }
+  }, [createMovie]);
+
+  const handleSubmitEditMovie = useCallback(async (movieData: UpdateMovieFormData) => {
+    if (!selectedMovie) return;
+    
+    const result = await updateMovie(selectedMovie.uuid, movieData);
+    
+    if (result.success) {
+      setIsEditModalOpen(false);
+      setSelectedMovie(null);
+      console.log('Movie updated successfully:', result.data);
+    } else {
+      console.error('Failed to update movie:', result.error);
+      alert(`Failed to update movie: ${result.error}`);
+    }
+  }, [selectedMovie, updateMovie]);
 
   const handleView = useCallback((movie: MovieDTO) => {
     navigate(ROUTE_PATHS.MOVIE_DETAIL.replace(':id', movie.uuid));
   }, [navigate]);
 
   const handleEdit = useCallback((movie: MovieDTO) => {
-    console.log('Edit movie:', movie);
+    setSelectedMovie(movie);
+    setIsEditModalOpen(true);
   }, []);
 
   const handleDelete = useCallback((movie: MovieDTO) => {
-    console.log('Delete movie:', movie);
+    setSelectedMovie(movie);
+    setIsDeleteDialogOpen(true);
   }, []);
+
+  const handleConfirmDelete = useCallback(async () => {
+    if (!selectedMovie) return;
+    
+    const result = await deleteMovie(selectedMovie.uuid);
+    
+    if (result.success) {
+      setIsDeleteDialogOpen(false);
+      setSelectedMovie(null);
+      console.log('Movie deleted successfully');
+    } else {
+      console.error('Failed to delete movie:', result.error);
+      alert(`Failed to delete movie: ${result.error}`);
+    }
+  }, [selectedMovie, deleteMovie]);
 
   const columns = useMemo(() => [
     {
@@ -150,25 +222,78 @@ const MoviesPage = () => {
   ), [searchTerm, handleSearch, handleAddNew]);
 
   return (
-    <TablePageTemplate
-      title="Movies"
-      pageControls={pageControls}
-      table={
-        <DataTable
-          columns={columns}
-          data={movies}
-          isLoading={isLoading}
-          error={error}
-          pagination={paginationData}
-          onPageChange={handlePageChange}
-          onPageSizeChange={handlePageSizeChange}
-          onView={handleView}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          emptyMessage="No movies found"
+    <>
+      <TablePageTemplate
+        title="Movies"
+        pageControls={pageControls}
+        table={
+          <DataTable
+            columns={columns}
+            data={movies}
+            isLoading={isLoading}
+            error={error}
+            pagination={paginationData}
+            onPageChange={handlePageChange}
+            onPageSizeChange={handlePageSizeChange}
+            onView={handleView}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            emptyMessage="No movies found"
+          />
+        }
+      />
+
+      <Modal
+        isOpen={isAddModalOpen}
+        onClose={handleCloseAddModal}
+        title="Add New Movie"
+        size="large"
+      >
+        <AddMovieForm
+          onSubmit={handleSubmitMovie}
+          onCancel={handleCloseAddModal}
+          isLoading={isCreating}
         />
-      }
-    />
+      </Modal>
+
+      {selectedMovie && (
+        <Modal
+          isOpen={isEditModalOpen}
+          onClose={handleCloseEditModal}
+          title="Edit Movie"
+          size="large"
+        >
+          <EditMovieForm
+            movie={selectedMovie}
+            onSubmit={handleSubmitEditMovie}
+            onCancel={handleCloseEditModal}
+            isLoading={isUpdating}
+          />
+        </Modal>
+      )}
+
+      <ConfirmDialog
+        isOpen={isDeleteDialogOpen}
+        onClose={handleCloseDeleteDialog}
+        onConfirm={handleConfirmDelete}
+        title="Delete Movie"
+        message={
+          selectedMovie ? (
+            <>
+              Are you sure you want to delete <strong>"{selectedMovie.title}"</strong>?
+              <br />
+              This action cannot be undone.
+            </>
+          ) : (
+            'Are you sure you want to delete this movie?'
+          )
+        }
+        confirmText="Delete"
+        cancelText="Cancel"
+        variant="danger"
+        isLoading={isDeleting}
+      />
+    </>
   );
 };
 
