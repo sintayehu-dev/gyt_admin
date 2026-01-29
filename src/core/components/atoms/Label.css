@@ -4,9 +4,9 @@
   color: var(--color-text-primary);
 }
 
-/* Dark theme for auth pages */
+/* Light theme for auth pages */
 .auth-template-container .label {
-  color: #e5e7eb;
+  color: #374151;
   font-weight: 500;
 }
 

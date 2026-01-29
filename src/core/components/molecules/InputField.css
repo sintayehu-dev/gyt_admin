@@ -1,5 +1,5 @@
 .input-field {
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--spacing-md);
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
@@ -12,11 +12,11 @@
 }
 
 .auth-template-container .input-field__error {
-  color: #FCA5A5;
+  color: #dc2626;
 }
 
 @media (max-width: 767px) {
   .input-field {
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
   }
 }

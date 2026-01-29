@@ -1,11 +1,11 @@
-/* AuthTemplate Styles - Dark Theme with Blur Effects */
+/* AuthTemplate Styles - Light Theme with Blur Effects */
 
 .auth-template-container {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     width: 100%;
-    background: linear-gradient(135deg, #1a1625 0%, #2a1f3d 50%, #1a1625 100%);
+    background: linear-gradient(135deg, #f8f7ff 0%, #faf5ff 50%, #f8f7ff 100%);
     margin: 0;
     padding: 0;
     position: relative;
@@ -18,30 +18,30 @@
     content: '';
     position: absolute;
     border-radius: 50%;
-    filter: blur(100px);
-    opacity: 0.3;
+    filter: blur(120px);
+    opacity: 0.15;
     pointer-events: none;
 }
 
 .auth-template-container::before {
-    width: 400px;
-    height: 400px;
+    width: 500px;
+    height: 500px;
     background: radial-gradient(circle, #8B5CF6 0%, transparent 70%);
-    top: -100px;
-    left: -100px;
+    top: -150px;
+    left: -150px;
 }
 
 .auth-template-container::after {
-    width: 500px;
-    height: 500px;
+    width: 600px;
+    height: 600px;
     background: radial-gradient(circle, #6366F1 0%, transparent 70%);
-    bottom: -150px;
-    right: -150px;
+    bottom: -200px;
+    right: -200px;
 }
 
 .auth-template-logo {
     width: 100%;
-    margin-bottom: var(--spacing-2xl);
+    margin-bottom: var(--spacing-lg);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -49,7 +49,6 @@
 
 .auth-template-logo .logo {
     margin-bottom: 0;
-    filter: brightness(0) invert(1);
 }
 
 
@@ -91,12 +90,12 @@
     flex-direction: column;
     align-items: stretch;
     gap: 0;
-    background: rgba(42, 36, 56, 0.8);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(139, 92, 246, 0.2);
+    border: 1px solid rgba(139, 92, 246, 0.15);
     border-radius: var(--radius-2xl);
-    padding: var(--spacing-2xl);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    padding: var(--spacing-xl);
+    box-shadow: 0 20px 60px rgba(139, 92, 246, 0.15);
 }
 
 .auth-template-form__content>* {
@@ -111,7 +110,7 @@
     
     .auth-template-form__content {
         max-width: 500px;
-        padding: var(--spacing-3xl);
+        padding: var(--spacing-2xl);
     }
 }
 
@@ -140,7 +139,7 @@
 }
 
 .auth-template-footer p {
-    color: rgba(156, 163, 175, 0.6);
+    color: rgba(107, 114, 128, 0.6);
     font-size: 11px;
     font-weight: 400;
     margin: 0;
