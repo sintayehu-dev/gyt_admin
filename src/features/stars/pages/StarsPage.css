@@ -1,0 +1,30 @@
+.stars-page__controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stars-page__name {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.stars-page__biography {
+  color: var(--color-text-secondary);
+  max-width: 400px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .stars-page__controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .stars-page__biography {
+    max-width: 200px;
+  }
+}

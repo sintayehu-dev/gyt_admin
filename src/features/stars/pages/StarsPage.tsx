@@ -6,29 +6,29 @@ import DataTable from '../../../core/components/organisms/DataTable';
 import ActionButtons from '../../../core/components/molecules/ActionButtons';
 import Modal from '../../../core/components/molecules/Modal';
 import ConfirmDialog from '../../../core/components/molecules/ConfirmDialog';
-import AddGenreForm, { GenreFormData } from '../components/organisms/AddGenreForm';
-import EditGenreForm, { UpdateGenreFormData } from '../components/organisms/EditGenreForm';
-import useGenres from '../hooks/useGenres';
-import { GenreDTO } from '../api/genres.dto';
+import AddStarForm, { StarFormData } from '../components/organisms/AddStarForm';
+import EditStarForm, { UpdateStarFormData } from '../components/organisms/EditStarForm';
+import useStars from '../hooks/useStars';
+import { StarDTO } from '../api/stars.dto';
 import { useToast } from '../../../core/context/ToastContext';
-import './GenresPage.css';
+import './StarsPage.css';
 
-const GenresPage = () => {
+const StarsPage = () => {
   const { 
-    genres, 
+    stars, 
     pagination, 
     isLoading, 
     error, 
     updateSearch, 
     updatePage, 
     updatePageSize,
-    createGenre,
-    updateGenre,
-    deleteGenre,
+    createStar,
+    updateStar,
+    deleteStar,
     isCreating,
     isUpdating,
     isDeleting,
-  } = useGenres();
+  } = useStars();
 
   const { showToast } = useToast();
 
@@ -36,7 +36,7 @@ const GenresPage = () => {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [selectedGenre, setSelectedGenre] = useState<GenreDTO | null>(null);
+  const [selectedStar, setSelectedStar] = useState<StarDTO | null>(null);
 
   const handleSearch = useCallback((value: string) => {
     setSearchTerm(value);
@@ -61,96 +61,96 @@ const GenresPage = () => {
 
   const handleCloseEditModal = useCallback(() => {
     setIsEditModalOpen(false);
-    setSelectedGenre(null);
+    setSelectedStar(null);
   }, []);
 
   const handleCloseDeleteDialog = useCallback(() => {
     setIsDeleteDialogOpen(false);
-    setSelectedGenre(null);
+    setSelectedStar(null);
   }, []);
 
-  const handleSubmitGenre = useCallback(async (genreData: GenreFormData) => {
-    const result = await createGenre(genreData);
+  const handleSubmitStar = useCallback(async (starData: StarFormData) => {
+    const result = await createStar(starData);
     
     if (result.success) {
       setIsAddModalOpen(false);
-      showToast('Genre created successfully', 'success');
+      showToast('Star created successfully', 'success');
     } else {
-      showToast(`Failed to create genre: ${result.error}`, 'error');
+      showToast(`Failed to create star: ${result.error}`, 'error');
     }
-  }, [createGenre, showToast]);
+  }, [createStar, showToast]);
 
-  const handleSubmitEditGenre = useCallback(async (genreData: UpdateGenreFormData) => {
-    if (!selectedGenre) return;
+  const handleSubmitEditStar = useCallback(async (starData: UpdateStarFormData) => {
+    if (!selectedStar) return;
     
-    const result = await updateGenre(selectedGenre.uuid, genreData);
+    const result = await updateStar(selectedStar.uuid, starData);
     
     if (result.success) {
       setIsEditModalOpen(false);
-      setSelectedGenre(null);
-      showToast('Genre updated successfully', 'success');
+      setSelectedStar(null);
+      showToast('Star updated successfully', 'success');
     } else {
-      showToast(`Failed to update genre: ${result.error}`, 'error');
+      showToast(`Failed to update star: ${result.error}`, 'error');
     }
-  }, [selectedGenre, updateGenre, showToast]);
+  }, [selectedStar, updateStar, showToast]);
 
 
 
-  const handleEdit = useCallback((genre: GenreDTO) => {
-    setSelectedGenre(genre);
+  const handleEdit = useCallback((star: StarDTO) => {
+    setSelectedStar(star);
     setIsEditModalOpen(true);
   }, []);
 
-  const handleDelete = useCallback((genre: GenreDTO) => {
-    setSelectedGenre(genre);
+  const handleDelete = useCallback((star: StarDTO) => {
+    setSelectedStar(star);
     setIsDeleteDialogOpen(true);
   }, []);
 
   const handleConfirmDelete = useCallback(async () => {
-    if (!selectedGenre) return;
+    if (!selectedStar) return;
     
-    const result = await deleteGenre(selectedGenre.uuid);
+    const result = await deleteStar(selectedStar.uuid);
     
     if (result.success) {
       setIsDeleteDialogOpen(false);
-      setSelectedGenre(null);
-      showToast('Genre deleted successfully', 'success');
+      setSelectedStar(null);
+      showToast('Star deleted successfully', 'success');
     } else {
-      showToast(`Failed to delete genre: ${result.error}`, 'error');
+      showToast(`Failed to delete star: ${result.error}`, 'error');
     }
-  }, [selectedGenre, deleteGenre, showToast]);
+  }, [selectedStar, deleteStar, showToast]);
 
   const columns = useMemo(() => [
     {
       key: 'name',
       label: 'NAME',
-      render: (genre: GenreDTO) => (
-        <div className="genres-page__name">
-          {genre.name}
+      render: (star: StarDTO) => (
+        <div className="stars-page__name">
+          {star.name}
         </div>
       ),
     },
     {
-      key: 'description',
-      label: 'DESCRIPTION',
-      render: (genre: GenreDTO) => (
-        <div className="genres-page__description">
-          {genre.description || '-'}
+      key: 'biography',
+      label: 'BIOGRAPHY',
+      render: (star: StarDTO) => (
+        <div className="stars-page__biography">
+          {star.biography || '-'}
         </div>
       ),
     },
     {
       key: 'createdAt',
       label: 'CREATED AT',
-      render: (genre: GenreDTO) => genre.formattedCreatedAt,
+      render: (star: StarDTO) => star.formattedCreatedAt,
     },
     {
       key: 'actions',
       label: 'ACTIONS',
-      render: (genre: GenreDTO) => (
+      render: (star: StarDTO) => (
         <ActionButtons
-          onEdit={() => handleEdit(genre)}
-          onDelete={() => handleDelete(genre)}
+          onEdit={() => handleEdit(star)}
+          onDelete={() => handleDelete(star)}
         />
       ),
     },
@@ -168,9 +168,9 @@ const GenresPage = () => {
   }, [pagination]);
 
   const pageControls = useMemo(() => (
-    <div className="genres-page__controls">
+    <div className="stars-page__controls">
       <SearchInput
-        placeholder="Search genres..."
+        placeholder="Search stars..."
         value={searchTerm}
         onChange={handleSearch}
       />
@@ -179,7 +179,7 @@ const GenresPage = () => {
           <line x1="12" y1="5" x2="12" y2="19" />
           <line x1="5" y1="12" x2="19" y2="12" />
         </svg>
-        <span className="text-body-3">Add Genre</span>
+        <span className="text-body-3">Add Star</span>
       </Button>
     </div>
   ), [searchTerm, handleSearch, handleAddNew]);
@@ -187,18 +187,18 @@ const GenresPage = () => {
   return (
     <>
       <TablePageTemplate
-        title="Genres"
+        title="Stars"
         pageControls={pageControls}
         table={
           <DataTable
             columns={columns}
-            data={genres}
+            data={stars}
             isLoading={isLoading}
             error={error}
             pagination={paginationData}
             onPageChange={handlePageChange}
             onPageSizeChange={handlePageSizeChange}
-            emptyMessage="No genres found"
+            emptyMessage="No stars found"
           />
         }
       />
@@ -206,26 +206,26 @@ const GenresPage = () => {
       <Modal
         isOpen={isAddModalOpen}
         onClose={handleCloseAddModal}
-        title="Add New Genre"
+        title="Add New Star"
         size="medium"
       >
-        <AddGenreForm
-          onSubmit={handleSubmitGenre}
+        <AddStarForm
+          onSubmit={handleSubmitStar}
           onCancel={handleCloseAddModal}
           isLoading={isCreating}
         />
       </Modal>
 
-      {selectedGenre && (
+      {selectedStar && (
         <Modal
           isOpen={isEditModalOpen}
           onClose={handleCloseEditModal}
-          title="Edit Genre"
+          title="Edit Star"
           size="medium"
         >
-          <EditGenreForm
-            genre={selectedGenre}
-            onSubmit={handleSubmitEditGenre}
+          <EditStarForm
+            star={selectedStar}
+            onSubmit={handleSubmitEditStar}
             onCancel={handleCloseEditModal}
             isLoading={isUpdating}
           />
@@ -236,16 +236,16 @@ const GenresPage = () => {
         isOpen={isDeleteDialogOpen}
         onClose={handleCloseDeleteDialog}
         onConfirm={handleConfirmDelete}
-        title="Delete Genre"
+        title="Delete Star"
         message={
-          selectedGenre ? (
+          selectedStar ? (
             <>
-              Are you sure you want to delete <strong>"{selectedGenre.name}"</strong>?
+              Are you sure you want to delete <strong>"{selectedStar.name}"</strong>?
               <br />
               This action cannot be undone.
             </>
           ) : (
-            'Are you sure you want to delete this genre?'
+            'Are you sure you want to delete this star?'
           )
         }
         confirmText="Delete"
@@ -257,4 +257,4 @@ const GenresPage = () => {
   );
 };
 
-export default GenresPage;
+export default StarsPage;

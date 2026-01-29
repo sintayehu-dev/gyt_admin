@@ -10,6 +10,7 @@ import AddDirectorForm, { DirectorFormData } from '../components/organisms/AddDi
 import EditDirectorForm, { UpdateDirectorFormData } from '../components/organisms/EditDirectorForm';
 import useDirectors from '../hooks/useDirectors';
 import { DirectorDTO } from '../api/directors.dto';
+import { useToast } from '../../../core/context/ToastContext';
 import './DirectorsPage.css';
 
 const DirectorsPage = () => {
@@ -28,6 +29,8 @@ const DirectorsPage = () => {
     isUpdating,
     isDeleting,
   } = useDirectors();
+
+  const { showToast } = useToast();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -71,10 +74,11 @@ const DirectorsPage = () => {
     
     if (result.success) {
       setIsAddModalOpen(false);
+      showToast('Director created successfully', 'success');
     } else {
-      alert(`Failed to create director: ${result.error}`);
+      showToast(`Failed to create director: ${result.error}`, 'error');
     }
-  }, [createDirector]);
+  }, [createDirector, showToast]);
 
   const handleSubmitEditDirector = useCallback(async (directorData: UpdateDirectorFormData) => {
     if (!selectedDirector) return;
@@ -84,15 +88,13 @@ const DirectorsPage = () => {
     if (result.success) {
       setIsEditModalOpen(false);
       setSelectedDirector(null);
+      showToast('Director updated successfully', 'success');
     } else {
-      alert(`Failed to update director: ${result.error}`);
+      showToast(`Failed to update director: ${result.error}`, 'error');
     }
-  }, [selectedDirector, updateDirector]);
+  }, [selectedDirector, updateDirector, showToast]);
 
-  const handleView = useCallback((director: DirectorDTO) => {
-    setSelectedDirector(director);
-    setIsEditModalOpen(true);
-  }, []);
+
 
   const handleEdit = useCallback((director: DirectorDTO) => {
     setSelectedDirector(director);
@@ -112,10 +114,11 @@ const DirectorsPage = () => {
     if (result.success) {
       setIsDeleteDialogOpen(false);
       setSelectedDirector(null);
+      showToast('Director deleted successfully', 'success');
     } else {
-      alert(`Failed to delete director: ${result.error}`);
+      showToast(`Failed to delete director: ${result.error}`, 'error');
     }
-  }, [selectedDirector, deleteDirector]);
+  }, [selectedDirector, deleteDirector, showToast]);
 
   const columns = useMemo(() => [
     {
@@ -146,13 +149,12 @@ const DirectorsPage = () => {
       label: 'ACTIONS',
       render: (director: DirectorDTO) => (
         <ActionButtons
-          onView={() => handleView(director)}
           onEdit={() => handleEdit(director)}
           onDelete={() => handleDelete(director)}
         />
       ),
     },
-  ], [handleView, handleEdit, handleDelete]);
+  ], [handleEdit, handleDelete]);
 
   const paginationData = useMemo(() => {
     if (!pagination) return null;
@@ -196,9 +198,6 @@ const DirectorsPage = () => {
             pagination={paginationData}
             onPageChange={handlePageChange}
             onPageSizeChange={handlePageSizeChange}
-            onView={handleView}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
             emptyMessage="No directors found"
           />
         }
