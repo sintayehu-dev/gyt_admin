@@ -6,7 +6,7 @@
 
 /* Light theme for auth pages */
 .auth-template-container .label {
-  color: #374151;
+  color: var(--color-text-dark);
   font-weight: 500;
 }
 

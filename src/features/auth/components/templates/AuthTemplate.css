@@ -5,7 +5,7 @@
     flex-direction: column;
     min-height: 100vh;
     width: 100%;
-    background: linear-gradient(135deg, #f8f7ff 0%, #faf5ff 50%, #f8f7ff 100%);
+    background: linear-gradient(135deg, var(--color-auth-bg-start) 0%, var(--color-auth-bg-mid) 50%, var(--color-auth-bg-end) 100%);
     margin: 0;
     padding: 0;
     position: relative;
@@ -26,7 +26,7 @@
 .auth-template-container::before {
     width: 500px;
     height: 500px;
-    background: radial-gradient(circle, #8B5CF6 0%, transparent 70%);
+    background: radial-gradient(circle, var(--color-auth-blur-primary) 0%, transparent 70%);
     top: -150px;
     left: -150px;
 }
@@ -34,7 +34,7 @@
 .auth-template-container::after {
     width: 600px;
     height: 600px;
-    background: radial-gradient(circle, #6366F1 0%, transparent 70%);
+    background: radial-gradient(circle, var(--color-auth-blur-secondary) 0%, transparent 70%);
     bottom: -200px;
     right: -200px;
 }
@@ -90,12 +90,12 @@
     flex-direction: column;
     align-items: stretch;
     gap: 0;
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--color-auth-card-bg);
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(139, 92, 246, 0.15);
+    border: 1px solid var(--color-auth-card-border);
     border-radius: var(--radius-2xl);
     padding: var(--spacing-xl);
-    box-shadow: 0 20px 60px rgba(139, 92, 246, 0.15);
+    box-shadow: 0 20px 60px var(--color-auth-card-shadow);
 }
 
 .auth-template-form__content>* {
@@ -139,7 +139,7 @@
 }
 
 .auth-template-footer p {
-    color: rgba(107, 114, 128, 0.6);
+    color: var(--color-auth-footer);
     font-size: 11px;
     font-weight: 400;
     margin: 0;

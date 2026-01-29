@@ -41,6 +41,7 @@
   /* Colors - Core */
   --color-primary: #8B5CF6;
   --color-primary-hover: #7C3AED;
+  --color-primary-dark: #6D28D9;
   --color-on-primary: #FFFFFF;
 
   /* Colors - Surface & Background */
@@ -51,12 +52,21 @@
   --color-on-background: #000000;
   
   /* Auth Page Colors */
-  --color-auth-bg: #1a1625;
-  --color-auth-card-bg: #2a2438;
-  --color-auth-input-bg: #3a3448;
-  --color-auth-input-border: #4a4458;
-  --color-auth-text: #e5e7eb;
-  --color-auth-text-secondary: #9ca3af;
+  --color-auth-bg-start: #f8f7ff;
+  --color-auth-bg-mid: #faf5ff;
+  --color-auth-bg-end: #f8f7ff;
+  --color-auth-card-bg: rgba(255, 255, 255, 0.95);
+  --color-auth-card-border: rgba(139, 92, 246, 0.15);
+  --color-auth-card-shadow: rgba(139, 92, 246, 0.15);
+  --color-auth-input-bg: #f9fafb;
+  --color-auth-input-border: #e5e7eb;
+  --color-auth-input-focus-bg: #ffffff;
+  --color-auth-text-primary: #1f2937;
+  --color-auth-text-secondary: #6b7280;
+  --color-auth-text-tertiary: #9ca3af;
+  --color-auth-footer: rgba(107, 114, 128, 0.6);
+  --color-auth-blur-primary: #8B5CF6;
+  --color-auth-blur-secondary: #6366F1;
 
   /* Colors - Secondary */
   --color-secondary: #6366F1;
@@ -65,6 +75,11 @@
 
   /* Colors - Status */
   --color-error: #EF4444;
+  --color-error-light: #dc2626;
+  --color-error-bg: rgba(239, 68, 68, 0.1);
+  --color-error-bg-light: rgba(239, 68, 68, 0.05);
+  --color-error-border: rgba(239, 68, 68, 0.3);
+  --color-error-border-strong: rgba(239, 68, 68, 0.5);
   --color-on-error: #FFFFFF;
   --color-success: #10B981;
   --color-on-success: #FFFFFF;
@@ -78,6 +93,7 @@
   --color-text-secondary: #6B7280;
   --color-text-tertiary: #9CA3AF;
   --color-text-disabled: #D1D5DB;
+  --color-text-dark: #374151;
 
   /* Colors - UI Elements */
   --color-border: #E5E7EB;
@@ -91,6 +107,7 @@
   --color-input-border: #D1D5DB;
   --color-input-border-focus: #1a2332;
   --color-input-placeholder: #9CA3AF;
+  --color-input-focus-shadow: rgba(139, 92, 246, 0.1);
 
   /* Colors - Card */
   --color-card-bg: #FFFFFF;

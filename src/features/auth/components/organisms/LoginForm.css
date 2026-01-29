@@ -10,7 +10,7 @@
 }
 
 .login-form__title {
-  color: #1f2937;
+  color: var(--color-auth-text-primary);
   font-size: 28px;
   font-weight: 600;
   margin: 0 0 var(--spacing-xs) 0;
@@ -18,7 +18,7 @@
 }
 
 .login-form__subtitle {
-  color: #6b7280;
+  color: var(--color-auth-text-secondary);
   font-size: 13px;
   font-weight: 400;
   margin: 0;
@@ -26,8 +26,8 @@
 }
 
 .login-form__error {
-  background-color: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.3);
+  background-color: var(--color-error-bg);
+  border: 1px solid var(--color-error-border);
   border-radius: var(--radius-md);
   padding: var(--spacing-sm) var(--spacing-md);
   margin-bottom: var(--spacing-md);
@@ -35,7 +35,7 @@
 }
 
 .login-form__error p {
-  color: #dc2626;
+  color: var(--color-error-light);
   margin: 0;
 }
 
@@ -63,7 +63,7 @@
   position: absolute;
   top: 0;
   right: 0;
-  color: #8B5CF6;
+  color: var(--color-primary);
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
@@ -89,9 +89,9 @@
 .login-form__checkbox {
   width: 18px;
   height: 18px;
-  border: 2px solid #d1d5db;
+  border: 2px solid var(--color-input-border);
   border-radius: 4px;
-  background-color: #ffffff;
+  background-color: var(--color-input-bg);
   cursor: pointer;
   appearance: none;
   position: relative;
@@ -99,8 +99,8 @@
 }
 
 .login-form__checkbox:checked {
-  background-color: #8B5CF6;
-  border-color: #8B5CF6;
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
 }
 
 .login-form__checkbox:checked::after {
@@ -109,13 +109,13 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: white;
+  color: var(--color-on-primary);
   font-size: 12px;
   font-weight: bold;
 }
 
 .login-form__checkbox-text {
-  color: #374151;
+  color: var(--color-text-dark);
   font-size: 14px;
   font-weight: 400;
 }
@@ -126,13 +126,13 @@
 }
 
 .login-form__footer-text {
-  color: #6b7280;
+  color: var(--color-auth-text-secondary);
   font-size: 13px;
   margin: 0;
 }
 
 .login-form__footer-link {
-  color: #8B5CF6;
+  color: var(--color-primary);
   text-decoration: none;
   font-weight: 500;
   transition: opacity var(--transition-fast);

@@ -12,7 +12,7 @@
 }
 
 .auth-template-container .input-field__error {
-  color: #dc2626;
+  color: var(--color-error-light);
 }
 
 @media (max-width: 767px) {
