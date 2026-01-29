@@ -1,45 +1,39 @@
 import { httpService } from '../../../core/services/api/httpService';
 import { NetworkExceptions } from '../../../core/services/api/networkExceptions';
-import { transformMoviesListResponse, MoviesListDTO, transformMovie } from './movies.dto';
+import { transformGenresListResponse, transformGenre, GenresListDTO, GenreDTO } from './genres.dto';
 
-interface MoviesListParams {
+interface GenresListParams {
   page?: number;
   size?: number;
   search?: string;
-  genre?: string;
-  language?: string;
-  isActive?: boolean;
 }
 
-interface MoviesSuccessResponse {
+interface GenresSuccessResponse {
   success: true;
-  data: MoviesListDTO;
+  data: GenresListDTO;
 }
 
-interface MoviesErrorResponse {
+interface GenresErrorResponse {
   success: false;
   error: string;
   exception?: any;
 }
 
-export type MoviesResponse = MoviesSuccessResponse | MoviesErrorResponse;
+export type GenresResponse = GenresSuccessResponse | GenresErrorResponse;
 
-export const moviesAPI = {
-  getMovies: async (params: MoviesListParams = {}): Promise<MoviesResponse> => {
+export const genresAPI = {
+  getGenres: async (params: GenresListParams = {}): Promise<GenresResponse> => {
     try {
-      const client = httpService.client({ requireAuth: false });
-
+      const client = httpService.client({ requireAuth: true });
+      
       const queryParams = new URLSearchParams();
       if (params.page !== undefined) queryParams.append('page', String(params.page));
       if (params.size !== undefined) queryParams.append('size', String(params.size));
       if (params.search) queryParams.append('search', params.search);
-      if (params.genre) queryParams.append('genre', params.genre);
-      if (params.language) queryParams.append('language', params.language);
-      if (params.isActive !== undefined) queryParams.append('isActive', String(params.isActive));
 
-      const response = await client.get(`/movies?${queryParams.toString()}`);
-
-      const transformedData = transformMoviesListResponse(response.data);
+      const response = await client.get(`/movies/genres?${queryParams.toString()}`);
+      
+      const transformedData = transformGenresListResponse(response.data);
 
       return {
         success: true,
@@ -57,14 +51,16 @@ export const moviesAPI = {
     }
   },
 
-  getMovieById: async (uuid: string): Promise<any> => {
+  getGenreById: async (uuid: string): Promise<{ success: true; data: GenreDTO } | { success: false; error: string; exception?: any }> => {
     try {
-      const client = httpService.client({ requireAuth: false });
-      const response = await client.get(`/movies/${uuid}`);
+      const client = httpService.client({ requireAuth: true });
+      const response = await client.get(`/movies/genres/${uuid}`);
+      
+      const transformedData = transformGenre(response.data.data);
 
       return {
         success: true,
-        data: transformMovie(response.data.data)
+        data: transformedData
       };
     } catch (error) {
       const networkException = NetworkExceptions.getException(error);
@@ -78,14 +74,16 @@ export const moviesAPI = {
     }
   },
 
-  createMovie: async (movieData: any): Promise<any> => {
+  createGenre: async (genreData: any): Promise<{ success: true; data: GenreDTO } | { success: false; error: string; exception?: any }> => {
     try {
       const client = httpService.client({ requireAuth: true });
-      const response = await client.post('/admin/movies', movieData);
-
+      const response = await client.post('/admin/movies/genres', genreData);
+      
+      const transformedData = transformGenre(response.data.data);
+      
       return {
         success: true,
-        data: transformMovie(response.data.data)
+        data: transformedData
       };
     } catch (error) {
       const networkException = NetworkExceptions.getException(error);
@@ -99,14 +97,16 @@ export const moviesAPI = {
     }
   },
 
-  updateMovie: async (uuid: string, movieData: any): Promise<any> => {
+  updateGenre: async (uuid: string, genreData: any): Promise<{ success: true; data: GenreDTO } | { success: false; error: string; exception?: any }> => {
     try {
       const client = httpService.client({ requireAuth: true });
-      const response = await client.put(`/admin/movies/${uuid}`, movieData);
-
+      const response = await client.patch(`/admin/movies/genres/${uuid}`, genreData);
+      
+      const transformedData = transformGenre(response.data.data);
+      
       return {
         success: true,
-        data: transformMovie(response.data.data)
+        data: transformedData
       };
     } catch (error) {
       const networkException = NetworkExceptions.getException(error);
@@ -120,14 +120,14 @@ export const moviesAPI = {
     }
   },
 
-  deleteMovie: async (uuid: string): Promise<any> => {
+  deleteGenre: async (uuid: string): Promise<{ success: true; message: string } | { success: false; error: string; exception?: any }> => {
     try {
       const client = httpService.client({ requireAuth: true });
-      const response = await client.delete(`/admin/movies/${uuid}`);
-
+      const response = await client.delete(`/admin/movies/genres/${uuid}`);
+      
       return {
         success: true,
-        data: response.data
+        message: response.data.message || 'Genre deleted successfully'
       };
     } catch (error) {
       const networkException = NetworkExceptions.getException(error);

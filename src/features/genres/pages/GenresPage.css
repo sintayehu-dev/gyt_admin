@@ -1,0 +1,30 @@
+.genres-page__controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.genres-page__name {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.genres-page__description {
+  color: var(--color-text-secondary);
+  max-width: 400px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .genres-page__controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .genres-page__description {
+    max-width: 200px;
+  }
+}

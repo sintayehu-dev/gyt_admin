@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { moviesAPI } from '../api/movies.api';
 import { MoviesListRequest } from '../api/movies.model';
 import { useState, useCallback, useMemo } from 'react';
+import { useToast } from '../../../core/context/ToastContext';
 
 export const movieKeys = {
   all: ['movies'],
@@ -30,6 +31,7 @@ interface UpdateMovieData extends CreateMovieData {
 
 const useMovies = () => {
   const queryClient = useQueryClient();
+  const { showToast } = useToast();
 
   const [pagination, setPagination] = useState({
     page: MoviesListRequest.page,
@@ -92,16 +94,20 @@ const useMovies = () => {
     mutationFn: async (movieData: CreateMovieData) => {
       console.log('[useMovies] Creating movie with data:', movieData);
       const result = await moviesAPI.createMovie(movieData);
-      
+
       if (!result.success) {
         throw new Error(result.error || 'Failed to create movie');
       }
-      
+
       console.log('[useMovies] Movie created successfully:', result.data);
       return result.data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: movieKeys.lists() });
+      showToast('Movie created successfully', 'success');
+    },
+    onError: (error: Error) => {
+      showToast(error.message || 'Failed to create movie', 'error');
     },
   });
 
@@ -109,17 +115,21 @@ const useMovies = () => {
     mutationFn: async ({ uuid, movieData }: { uuid: string; movieData: UpdateMovieData }) => {
       console.log('[useMovies] Updating movie:', uuid, 'with data:', movieData);
       const result = await moviesAPI.updateMovie(uuid, movieData);
-      
+
       if (!result.success) {
         throw new Error(result.error || 'Failed to update movie');
       }
-      
+
       console.log('[useMovies] Movie updated successfully:', result.data);
       return result.data;
     },
     onSuccess: (data, variables) => {
       queryClient.setQueryData(movieKeys.detail(variables.uuid), data);
       queryClient.invalidateQueries({ queryKey: movieKeys.lists() });
+      showToast('Movie updated successfully', 'success');
+    },
+    onError: (error: Error) => {
+      showToast(error.message || 'Failed to update movie', 'error');
     },
   });
 
@@ -127,17 +137,21 @@ const useMovies = () => {
     mutationFn: async (movieId: string) => {
       console.log('[useMovies] Deleting movie:', movieId);
       const result = await moviesAPI.deleteMovie(movieId);
-      
+
       if (!result.success) {
         throw new Error(result.error || 'Failed to delete movie');
       }
-      
+
       console.log('[useMovies] Movie deleted successfully');
       return result;
     },
     onSuccess: (_result, movieId) => {
       queryClient.invalidateQueries({ queryKey: movieKeys.lists() });
       queryClient.removeQueries({ queryKey: movieKeys.detail(movieId) });
+      showToast('Movie deleted successfully', 'success');
+    },
+    onError: (error: Error) => {
+      showToast(error.message || 'Failed to delete movie', 'error');
     },
   });
 

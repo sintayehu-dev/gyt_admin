@@ -6,6 +6,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Logo from '../atoms/Logo';
+import { ROUTE_PATHS } from '../../routes/routeNames';
 import './Sidebar.css';
 
 const Sidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }) => {
@@ -24,7 +25,7 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }) => {
                     <rect x="3" y="14" width="7" height="7" rx="1" />
                 </svg>
             ),
-            path: '/dashboard',
+            path: ROUTE_PATHS.DASHBOARD,
         },
         {
             id: 'movies',
@@ -41,7 +42,7 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }) => {
                     <line x1="17" y1="7" x2="22" y2="7" />
                 </svg>
             ),
-            path: '/movies',
+            path: ROUTE_PATHS.MOVIES,
         },
         {
             id: 'genres',
@@ -52,7 +53,7 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }) => {
                     <path d="M12 1v6m0 6v6m5.2-13.2l-4.2 4.2m0 6l4.2 4.2M23 12h-6m-6 0H1m18.2 5.2l-4.2-4.2m0-6l4.2-4.2" />
                 </svg>
             ),
-            path: '/genres',
+            path: ROUTE_PATHS.GENRES,
         },
         {
             id: 'directors',
@@ -63,7 +64,7 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }) => {
                     <circle cx="12" cy="7" r="4" />
                 </svg>
             ),
-            path: '/directors',
+            path: ROUTE_PATHS.DIRECTORS,
         },
         {
             id: 'stars',
@@ -73,7 +74,7 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }) => {
                     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                 </svg>
             ),
-            path: '/stars',
+            path: ROUTE_PATHS.STARS,
         },
         {
             id: 'schedules',
@@ -86,7 +87,7 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }) => {
                     <line x1="3" y1="10" x2="21" y2="10" />
                 </svg>
             ),
-            path: '/schedules',
+            path: ROUTE_PATHS.SCHEDULES,
         },
         {
             id: 'tickets',
@@ -96,7 +97,7 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }) => {
                     <path d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 0 0-2 2v3a2 2 0 1 1 0 4v3a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-3a2 2 0 1 1 0-4V7a2 2 0 0 0-2-2H5z" />
                 </svg>
             ),
-            path: '/tickets',
+            path: ROUTE_PATHS.TICKETS,
         },
         {
             id: 'settings',
@@ -107,7 +108,7 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }) => {
                     <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
                 </svg>
             ),
-            path: '/settings',
+            path: ROUTE_PATHS.SETTINGS,
         },
     ];
 

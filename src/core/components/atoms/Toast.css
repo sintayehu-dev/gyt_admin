@@ -36,6 +36,11 @@
   color: var(--color-on-surface);
 }
 
+.toast--error {
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+}
+
 .toast__icon {
   width: 3rem;
   height: 3rem;
@@ -55,6 +60,12 @@
 .toast--info .toast__icon {
   background-color: var(--color-info);
   color: var(--color-on-info);
+  opacity: 0.9;
+}
+
+.toast--error .toast__icon {
+  background-color: var(--color-danger);
+  color: var(--color-on-danger);
   opacity: 0.9;
 }
 

@@ -16,13 +16,13 @@ import './MoviesPage.css';
 
 const MoviesPage = () => {
   const navigate = useNavigate();
-  const { 
-    movies, 
-    pagination, 
-    isLoading, 
-    error, 
-    updateSearch, 
-    updatePage, 
+  const {
+    movies,
+    pagination,
+    isLoading,
+    error,
+    updateSearch,
+    updatePage,
     updatePageSize,
     createMovie,
     updateMovie,
@@ -71,28 +71,26 @@ const MoviesPage = () => {
 
   const handleSubmitMovie = useCallback(async (movieData: MovieFormData) => {
     const result = await createMovie(movieData);
-    
+
     if (result.success) {
       setIsAddModalOpen(false);
       console.log('Movie created successfully:', result.data);
     } else {
       console.error('Failed to create movie:', result.error);
-      alert(`Failed to create movie: ${result.error}`);
     }
   }, [createMovie]);
 
   const handleSubmitEditMovie = useCallback(async (movieData: UpdateMovieFormData) => {
     if (!selectedMovie) return;
-    
+
     const result = await updateMovie(selectedMovie.uuid, movieData);
-    
+
     if (result.success) {
       setIsEditModalOpen(false);
       setSelectedMovie(null);
       console.log('Movie updated successfully:', result.data);
     } else {
       console.error('Failed to update movie:', result.error);
-      alert(`Failed to update movie: ${result.error}`);
     }
   }, [selectedMovie, updateMovie]);
 
@@ -112,16 +110,15 @@ const MoviesPage = () => {
 
   const handleConfirmDelete = useCallback(async () => {
     if (!selectedMovie) return;
-    
+
     const result = await deleteMovie(selectedMovie.uuid);
-    
+
     if (result.success) {
       setIsDeleteDialogOpen(false);
       setSelectedMovie(null);
       console.log('Movie deleted successfully');
     } else {
       console.error('Failed to delete movie:', result.error);
-      alert(`Failed to delete movie: ${result.error}`);
     }
   }, [selectedMovie, deleteMovie]);
 
@@ -195,7 +192,7 @@ const MoviesPage = () => {
 
   const paginationData = useMemo(() => {
     if (!pagination) return null;
-    
+
     return {
       page: pagination.page + 1,
       size: pagination.size,
