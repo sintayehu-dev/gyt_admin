@@ -1,0 +1,30 @@
+.directors-page__controls {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.directors-page__name {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.directors-page__biography {
+  color: var(--color-text-secondary);
+  max-width: 400px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .directors-page__controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .directors-page__biography {
+    max-width: 200px;
+  }
+}
