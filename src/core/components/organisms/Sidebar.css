@@ -109,7 +109,7 @@
 }
 
 .sidebar__close-mobile {
-    background: rgba(139, 92, 246, 0.1);
+    background: #F3F4F6;
     border: none;
     color: #8B5CF6;
     cursor: pointer;
@@ -125,7 +125,7 @@
 }
 
 .sidebar__close-mobile:hover {
-    background-color: rgba(139, 92, 246, 0.2);
+    background-color: #E5E7EB;
 }
 
 @media (min-width: 1024px) {
