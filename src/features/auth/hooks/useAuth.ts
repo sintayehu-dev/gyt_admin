@@ -19,11 +19,25 @@ interface AuthState {
 }
 
 const useAuth = () => {
-  const [state, setState] = useState<AuthState>({
-    user: null,
-    isAuthenticated: false,
-    isLoading: false,
-    error: null,
+  const [state, setState] = useState<AuthState>(() => {
+    const accessToken = tokenRefreshService.getAccessToken();
+    const userData = tokenRefreshService.getUserData();
+
+    if (accessToken && userData) {
+      return {
+        user: userData as User,
+        isAuthenticated: true,
+        isLoading: false,
+        error: null,
+      };
+    }
+
+    return {
+      user: null,
+      isAuthenticated: false,
+      isLoading: false,
+      error: null,
+    };
   });
 
   const login = useCallback(async (credentials: { email: string; password: string }) => {
@@ -37,14 +51,7 @@ const useAuth = () => {
 
         tokenRefreshService.setAccessToken(accessToken);
         tokenRefreshService.setRefreshToken(refreshToken);
-
-        const userData = {
-          id: user.uuid,
-          email: user.email,
-          name: user.name,
-          role: user.role,
-        };
-        tokenRefreshService.setUserData(userData);
+        tokenRefreshService.setUserData(user);
 
         setState({
           user,

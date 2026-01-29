@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   useEffect(() => {
     auth.checkAuth();
-  }, []);
+  }, [auth.checkAuth]);
 
   return (
     <AuthContext.Provider value={auth}>

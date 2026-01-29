@@ -1,12 +1,59 @@
+import Pagination from '../molecules/Pagination';
+import LoadingSpinner from '../atoms/LoadingSpinner';
 import './DataTable.css';
+
+interface Column {
+    key: string;
+    label: string;
+    sortable?: boolean;
+    render?: (row: any) => React.ReactNode;
+}
+
+interface PaginationData {
+    page: number;
+    size: number;
+    totalItems: number;
+    totalPages: number;
+}
+
+interface DataTableProps {
+    columns: Column[];
+    data: any[];
+    onSort?: (key: string) => void;
+    currentSort?: { key: string; direction: 'asc' | 'desc' };
+    emptyMessage?: string;
+    isLoading?: boolean;
+    error?: string | null;
+    pagination?: PaginationData | null;
+    onPageChange?: (page: number) => void;
+    onPageSizeChange?: (size: number) => void;
+    onView?: (row: any) => void;
+    onEdit?: (row: any) => void;
+    onDelete?: (row: any) => void;
+}
 
 const DataTable = ({
     columns,
     data,
     onSort,
     currentSort,
-    emptyMessage = 'No data available'
-}) => {
+    emptyMessage = 'No data available',
+    isLoading = false,
+    error = null,
+    pagination,
+    onPageChange,
+    onPageSizeChange,
+}: DataTableProps) => {
+    if (error) {
+        return (
+            <div className="data-table">
+                <div className="data-table__error">
+                    <p>{error}</p>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="data-table">
             <div className="data-table__wrapper">
@@ -40,7 +87,13 @@ const DataTable = ({
                         </tr>
                     </thead>
                     <tbody className="data-table__tbody">
-                        {data.length === 0 ? (
+                        {isLoading ? (
+                            <tr>
+                                <td colSpan={columns.length} className="data-table__loading">
+                                    <LoadingSpinner size="medium" message="Loading data..." />
+                                </td>
+                            </tr>
+                        ) : data.length === 0 ? (
                             <tr>
                                 <td colSpan={columns.length} className="data-table__empty text-body-3">
                                     {emptyMessage}
@@ -60,9 +113,19 @@ const DataTable = ({
                     </tbody>
                 </table>
             </div>
+
+            {pagination && onPageChange && onPageSizeChange && (
+                <Pagination
+                    currentPage={pagination.page}
+                    totalPages={pagination.totalPages}
+                    pageSize={pagination.size}
+                    totalItems={pagination.totalItems}
+                    onPageChange={onPageChange}
+                    onPageSizeChange={onPageSizeChange}
+                />
+            )}
         </div>
     );
 };
 
 export default DataTable;
-

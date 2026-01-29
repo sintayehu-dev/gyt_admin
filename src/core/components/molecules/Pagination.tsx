@@ -1,10 +1,22 @@
 import './Pagination.css';
 
+interface PaginationProps {
+  currentPage?: number;
+  totalPages?: number;
+  pageSize?: number;
+  totalItems?: number;
+  onPageChange: (page: number) => void;
+  onPageSizeChange?: (size: number) => void;
+}
+
 const Pagination = ({ 
   currentPage = 1, 
-  totalPages = 1, 
-  onPageChange 
-}) => {
+  totalPages = 1,
+  pageSize = 10,
+  totalItems = 0,
+  onPageChange,
+  onPageSizeChange
+}: PaginationProps) => {
   const renderPageNumbers = () => {
     const pages = [];
     const maxVisible = 5;
@@ -26,45 +38,60 @@ const Pagination = ({
     return pages;
   };
 
+  const startItem = (currentPage - 1) * pageSize + 1;
+  const endItem = Math.min(currentPage * pageSize, totalItems);
+
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      onPageChange(currentPage - 1);
+    }
+  };
+
+  const handleNext = () => {
+    if (currentPage < totalPages) {
+      onPageChange(currentPage + 1);
+    }
+  };
+
   return (
     <div className="pagination">
-      <button
-        className="pagination__btn"
-        onClick={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-        aria-label="Previous page"
-      >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <polyline points="15 18 9 12 15 6" />
-        </svg>
-      </button>
+      <div className="pagination__controls">
+        <button
+          className={`pagination__btn ${currentPage === 1 ? 'pagination__btn--disabled' : ''}`}
+          onClick={handlePrevious}
+          aria-label="Previous page"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
 
-      {renderPageNumbers().map((page, index) => (
-        page === '...' ? (
-          <span key={`ellipsis-${index}`} className="pagination__ellipsis text-body-3">
-            ...
-          </span>
-        ) : (
-          <button
-            key={page}
-            className={`pagination__number text-body-3 ${currentPage === page ? 'pagination__number--active' : ''}`}
-            onClick={() => onPageChange(page)}
-          >
-            {page}
-          </button>
-        )
-      ))}
+        {renderPageNumbers().map((page, index) => (
+          page === '...' ? (
+            <span key={`ellipsis-${index}`} className="pagination__ellipsis text-body-3">
+              ...
+            </span>
+          ) : (
+            <button
+              key={page}
+              className={`pagination__number text-body-3 ${currentPage === page ? 'pagination__number--active' : ''}`}
+              onClick={() => onPageChange(page as number)}
+            >
+              {page}
+            </button>
+          )
+        ))}
 
-      <button
-        className="pagination__btn"
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-        aria-label="Next page"
-      >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <polyline points="9 18 15 12 9 6" />
-        </svg>
-      </button>
+        <button
+          className={`pagination__btn ${currentPage === totalPages ? 'pagination__btn--disabled' : ''}`}
+          onClick={handleNext}
+          aria-label="Next page"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
+      </div>
     </div>
   );
 };

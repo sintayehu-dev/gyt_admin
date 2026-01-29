@@ -1,14 +1,12 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { LoginPage, RegisterPage, ResetPasswordPage, CheckEmailPage, SetNewPasswordPage, VerifyOTPPage } from '../../features/auth';
 import { DashboardPage } from '../../features/dashboard';
-import RiderManagementPage from '../../features/users/pages/RiderManagementPage';
-import ParentManagementPage from '../../features/users/pages/ParentManagementPage';
-import AdminManagementPage from '../../features/users/pages/AdminManagementPage';
+import { MoviesPage } from '../../features/movies';
+import MovieDetailPage from '../../features/movies/pages/MovieDetailPage';
 import DashboardLayout from '../layouts/DashboardLayout';
 import ProtectedRoute from './ProtectedRoute';
 import { ROUTE_PATHS } from './routeNames';
 
-// Error component for invalid routes
 const ErrorPage = () => {
   return (
     <div style={{ padding: '2rem', textAlign: 'center' }}>
@@ -21,20 +19,6 @@ const ErrorPage = () => {
   );
 };
 
-/**
- * Application Router Configuration
- * 
- * This router uses feature-based imports to maintain loose coupling between
- * the routing layer and feature implementations. Each route imports page
- * components from feature public APIs (index.js files) rather than directly
- * from internal feature files.
- * 
- * Route Structure:
- * - / (ROOT): Redirects to login page
- * - /login (LOGIN): User authentication page (landing page)
- * - /dashboard (DASHBOARD): Main dashboard after authentication
- * - * (catch-all): 404 error page for invalid routes
- */
 const router = createBrowserRouter([
   {
     path: '/',
@@ -76,16 +60,12 @@ const router = createBrowserRouter([
         element: <DashboardPage />,
       },
       {
-        path: '/users/rider',
-        element: <RiderManagementPage />,
+        path: ROUTE_PATHS.MOVIES,
+        element: <MoviesPage />,
       },
       {
-        path: '/users/parent',
-        element: <ParentManagementPage />,
-      },
-      {
-        path: '/users/admin',
-        element: <AdminManagementPage />,
+        path: ROUTE_PATHS.MOVIE_DETAIL,
+        element: <MovieDetailPage />,
       },
     ],
   },

@@ -1,0 +1,78 @@
+.movies-page__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.movies-page__poster {
+  width: 50px;
+  height: 70px;
+  border-radius: 0.375rem;
+  overflow: hidden;
+}
+
+.movies-page__poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.movies-page__title-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.movies-page__title {
+  font-weight: 600;
+  color: #1F2937;
+}
+
+.movies-page__language {
+  font-size: 0.75rem;
+  color: #9CA3AF;
+}
+
+.movies-page__genres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  align-items: center;
+}
+
+.movies-page__genre-badge {
+  display: inline-block;
+  padding: 0.25rem 0.625rem;
+  background: #EDE9FE;
+  color: #7C3AED;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.movies-page__genre-more {
+  font-size: 0.75rem;
+  color: #6B7280;
+  font-weight: 500;
+}
+
+.movies-page__status {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.movies-page__status--active {
+  background: #D1FAE5;
+  color: #065F46;
+}
+
+.movies-page__status--inactive {
+  background: #FEE2E2;
+  color: #991B1B;
+}

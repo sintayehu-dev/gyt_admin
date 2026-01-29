@@ -81,6 +81,20 @@
   color: #9CA3AF;
 }
 
+.data-table__loading {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.data-table__error {
+  text-align: center;
+  padding: 2rem;
+  color: #EF4444;
+  background: #FEF2F2;
+  border-radius: 0.5rem;
+  margin: 1rem;
+}
+
 @media (max-width: 768px) {
   .data-table__table {
     min-width: 800px;
