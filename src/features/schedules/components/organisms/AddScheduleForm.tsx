@@ -1,10 +1,10 @@
-import { useState, FormEvent, useEffect } from 'react';
+import { useState, FormEvent } from 'react';
 import Button from '../../../../core/components/atoms/Button';
 import Input from '../../../../core/components/atoms/Input';
 import Label from '../../../../core/components/atoms/Label';
-import Select from '../../../../core/components/atoms/Select';
+import InfiniteSelect from '../../../../core/components/atoms/InfiniteSelect';
 import LoadingSpinner from '../../../../core/components/atoms/LoadingSpinner';
-import { moviesAPI } from '../../../movies/api/movies.api';
+import useMoviesForDropdown from '../../../movies/hooks/useMoviesForDropdown';
 import './ScheduleForm.css';
 
 interface AddScheduleFormProps {
@@ -24,6 +24,8 @@ export interface ScheduleFormData {
 }
 
 const AddScheduleForm = ({ onSubmit, onCancel, isLoading = false }: AddScheduleFormProps) => {
+  const { movies, isLoading: loadingMovies, fetchNextPage, hasNextPage, isFetchingNextPage } = useMoviesForDropdown();
+  
   const [formData, setFormData] = useState<ScheduleFormData>({
     movieUuid: '',
     cinemaHall: '',
@@ -33,21 +35,6 @@ const AddScheduleForm = ({ onSubmit, onCancel, isLoading = false }: AddScheduleF
     totalSeats: 0,
     price: 0,
   });
-
-  const [movies, setMovies] = useState<Array<{ uuid: string; title: string }>>([]);
-  const [loadingMovies, setLoadingMovies] = useState(false);
-
-  useEffect(() => {
-    const fetchMovies = async () => {
-      setLoadingMovies(true);
-      const result = await moviesAPI.getMovies({ page: 0, size: 100, isActive: true });
-      if (result.success) {
-        setMovies(result.data.items.map(movie => ({ uuid: movie.uuid, title: movie.title })));
-      }
-      setLoadingMovies(false);
-    };
-    fetchMovies();
-  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -62,49 +49,43 @@ const AddScheduleForm = ({ onSubmit, onCancel, isLoading = false }: AddScheduleF
     await onSubmit(formData);
   };
 
-  const cinemaHalls = ['Hall 1', 'Hall 2', 'Hall 3', 'Hall 4', 'Hall 5'];
+  const movieOptions = movies.map(movie => ({
+    value: movie.uuid,
+    label: movie.title,
+  }));
 
   return (
     <form className="schedule-form" onSubmit={handleSubmit}>
       <div className="schedule-form__fields">
         <div className="schedule-form__field">
           <Label htmlFor="movieUuid">Movie *</Label>
-          <Select
+          <InfiniteSelect
             id="movieUuid"
             name="movieUuid"
             value={formData.movieUuid}
             onChange={handleInputChange}
             placeholder="Select a movie"
+            options={movieOptions as any}
+            onScrollEnd={() => hasNextPage && fetchNextPage()}
+            isLoadingMore={isFetchingNextPage}
+            hasMore={hasNextPage}
             required
             disabled={isLoading || loadingMovies}
-          >
-            <option value="">Select a movie</option>
-            {movies.map(movie => (
-              <option key={movie.uuid} value={movie.uuid}>
-                {movie.title}
-              </option>
-            ))}
-          </Select>
+          />
         </div>
 
         <div className="schedule-form__field">
           <Label htmlFor="cinemaHall">Cinema Hall *</Label>
-          <Select
+          <Input
             id="cinemaHall"
             name="cinemaHall"
+            type="text"
             value={formData.cinemaHall}
             onChange={handleInputChange}
-            placeholder="Select a hall"
+            placeholder="e.g., Hall 1, IMAX Theater, VIP Hall"
             required
             disabled={isLoading}
-          >
-            <option value="">Select a hall</option>
-            {cinemaHalls.map(hall => (
-              <option key={hall} value={hall}>
-                {hall}
-              </option>
-            ))}
-          </Select>
+          />
         </div>
 
         <div className="schedule-form__field">

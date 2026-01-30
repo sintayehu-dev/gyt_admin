@@ -1,5 +1,18 @@
+export interface MovieDTO {
+  uuid: string;
+  title: string;
+  description: string;
+  duration: number | null;
+  releaseDate: string;
+  language: string;
+  country: string | null;
+  posterUrl: string;
+  trailerUrl: string;
+}
+
 export interface ScheduleDTO {
   uuid: string;
+  movie: MovieDTO;
   movieUuid: string;
   cinemaHall: string;
   showDate: string;
@@ -43,10 +56,25 @@ const formatTime = (timeString: string): string => {
   return timeString.substring(0, 5); // HH:MM
 };
 
+const transformMovie = (movie: any): MovieDTO => {
+  return {
+    uuid: movie.uuid || '',
+    title: movie.title || '',
+    description: movie.description || '',
+    duration: movie.duration || null,
+    releaseDate: movie.releaseDate || '',
+    language: movie.language || '',
+    country: movie.country || null,
+    posterUrl: movie.posterUrl || '',
+    trailerUrl: movie.trailerUrl || '',
+  };
+};
+
 export const transformSchedule = (schedule: any): ScheduleDTO => {
   return {
     uuid: schedule.uuid || '',
-    movieUuid: schedule.movieUuid || '',
+    movie: transformMovie(schedule.movie || {}),
+    movieUuid: schedule.movie?.uuid || schedule.movieUuid || '',
     cinemaHall: schedule.cinemaHall || '',
     showDate: schedule.showDate || '',
     showTime: schedule.showTime || '',

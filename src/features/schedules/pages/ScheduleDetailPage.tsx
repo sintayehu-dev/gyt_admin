@@ -80,6 +80,13 @@ const ScheduleDetailPage = () => {
 
     return {
       uuid: scheduleData.uuid || '',
+      movie: {
+        uuid: scheduleData.movie?.uuid || '',
+        title: scheduleData.movie?.title || 'N/A',
+        description: scheduleData.movie?.description || 'N/A',
+        posterUrl: scheduleData.movie?.posterUrl || '',
+        language: scheduleData.movie?.language || 'N/A',
+      },
       movieUuid: scheduleData.movieUuid || 'N/A',
       cinemaHall: scheduleData.cinemaHall || 'N/A',
       showDate: scheduleData.formattedShowDate || 'N/A',
@@ -183,7 +190,7 @@ const ScheduleDetailPage = () => {
                 <span className="schedule-detail-page__breadcrumb-item text-body-3">Schedules</span>
                 <span className="schedule-detail-page__breadcrumb-separator">›</span>
                 <span className="schedule-detail-page__breadcrumb-item schedule-detail-page__breadcrumb-item--active text-body-3">
-                  {transformedScheduleData.cinemaHall} - {transformedScheduleData.showDate}
+                  {transformedScheduleData.movie.title} - {transformedScheduleData.cinemaHall}
                 </span>
               </div>
             </div>
@@ -209,6 +216,42 @@ const ScheduleDetailPage = () => {
         {/* Main Content */}
         <div className="schedule-detail-page__content">
           <div className="schedule-detail-page__main">
+            <div className="schedule-detail-page__info-card">
+              <h2 className="schedule-detail-page__section-title text-h6">Movie Information</h2>
+              
+              <div className="schedule-detail-page__info-grid">
+                <div className="schedule-detail-page__info-item schedule-detail-page__info-item--full">
+                  <span className="schedule-detail-page__info-label text-body-4">Movie Title</span>
+                  <span className="schedule-detail-page__info-value text-body-3">{transformedScheduleData.movie.title}</span>
+                </div>
+
+                <div className="schedule-detail-page__info-item schedule-detail-page__info-item--full">
+                  <span className="schedule-detail-page__info-label text-body-4">Description</span>
+                  <span className="schedule-detail-page__info-value text-body-3">{transformedScheduleData.movie.description}</span>
+                </div>
+
+                <div className="schedule-detail-page__info-item">
+                  <span className="schedule-detail-page__info-label text-body-4">Language</span>
+                  <span className="schedule-detail-page__info-value text-body-3">{transformedScheduleData.movie.language}</span>
+                </div>
+
+                {transformedScheduleData.movie.posterUrl && (
+                  <div className="schedule-detail-page__info-item">
+                    <span className="schedule-detail-page__info-label text-body-4">Poster</span>
+                    <a
+                      href={transformedScheduleData.movie.posterUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="schedule-detail-page__info-value text-body-3"
+                      style={{ color: 'var(--color-primary)', textDecoration: 'underline' }}
+                    >
+                      View Poster
+                    </a>
+                  </div>
+                )}
+              </div>
+            </div>
+
             <div className="schedule-detail-page__info-card">
               <h2 className="schedule-detail-page__section-title text-h6">Schedule Information</h2>
               
@@ -317,7 +360,7 @@ const ScheduleDetailPage = () => {
         title="Delete Schedule"
         message={
           <>
-            Are you sure you want to delete the schedule for <strong>"{transformedScheduleData.cinemaHall}"</strong> on <strong>{transformedScheduleData.showDate}</strong>?
+            Are you sure you want to delete the schedule for <strong>"{transformedScheduleData.movie.title}"</strong> in <strong>{transformedScheduleData.cinemaHall}</strong> on <strong>{transformedScheduleData.showDate}</strong>?
             <br />
             This action cannot be undone and you will be redirected to the schedules list.
           </>

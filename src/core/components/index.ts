@@ -5,6 +5,7 @@ export { default as Label } from './atoms/Label';
 export { default as Logo } from './atoms/Logo';
 export { default as ActionButton } from './atoms/ActionButton';
 export { default as LoadingSpinner } from './atoms/LoadingSpinner';
+export { default as InfiniteSelect } from './atoms/InfiniteSelect';
 
 // Molecules
 export { default as InputField } from './molecules/InputField';
@@ -14,4 +15,4 @@ export { default as Modal } from './molecules/Modal';
 export { default as ConfirmDialog } from './molecules/ConfirmDialog';
 
 // Templates
-export { default as AuthTemplate } from './templates/AuthTemplate';
+export { default as TablePageTemplate } from './templates/TablePageTemplate';

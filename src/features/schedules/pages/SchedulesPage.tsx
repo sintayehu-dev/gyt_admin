@@ -126,6 +126,15 @@ const SchedulesPage = () => {
 
   const columns = useMemo(() => [
     {
+      key: 'movie',
+      label: 'MOVIE',
+      render: (schedule: ScheduleDTO) => (
+        <div className="schedules-page__hall">
+          {schedule.movie.title}
+        </div>
+      ),
+    },
+    {
       key: 'cinemaHall',
       label: 'CINEMA HALL',
       render: (schedule: ScheduleDTO) => (
