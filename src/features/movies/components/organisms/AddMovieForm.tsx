@@ -3,6 +3,10 @@ import Button from '../../../../core/components/atoms/Button';
 import Input from '../../../../core/components/atoms/Input';
 import Label from '../../../../core/components/atoms/Label';
 import LoadingSpinner from '../../../../core/components/atoms/LoadingSpinner';
+import InfiniteMultiSelect from '../../../../core/components/atoms/InfiniteMultiSelect';
+import useGenresForDropdown from '../../../genres/hooks/useGenresForDropdown';
+import useDirectorsForDropdown from '../../../directors/hooks/useDirectorsForDropdown';
+import useStarsForDropdown from '../../../stars/hooks/useStarsForDropdown';
 import './AddMovieForm.css';
 
 interface AddMovieFormProps {
@@ -25,6 +29,10 @@ export interface MovieFormData {
 }
 
 const AddMovieForm = ({ onSubmit, onCancel, isLoading = false }: AddMovieFormProps) => {
+  const { genres, isLoading: loadingGenres, fetchNextPage: fetchNextGenres, hasNextPage: hasNextGenres, isFetchingNextPage: isFetchingNextGenres } = useGenresForDropdown();
+  const { directors, isLoading: loadingDirectors, fetchNextPage: fetchNextDirectors, hasNextPage: hasNextDirectors, isFetchingNextPage: isFetchingNextDirectors } = useDirectorsForDropdown();
+  const { stars, isLoading: loadingStars, fetchNextPage: fetchNextStars, hasNextPage: hasNextStars, isFetchingNextPage: isFetchingNextStars } = useStarsForDropdown();
+  
   const [formData, setFormData] = useState<MovieFormData>({
     title: '',
     description: '',
@@ -38,10 +46,6 @@ const AddMovieForm = ({ onSubmit, onCancel, isLoading = false }: AddMovieFormPro
     stars: [],
   });
 
-  const [genreInput, setGenreInput] = useState('');
-  const [directorInput, setDirectorInput] = useState('');
-  const [starInput, setStarInput] = useState('');
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -50,61 +54,37 @@ const AddMovieForm = ({ onSubmit, onCancel, isLoading = false }: AddMovieFormPro
     }));
   };
 
-  const handleAddGenre = () => {
-    if (genreInput.trim() && !formData.genres.includes(genreInput.trim())) {
-      setFormData(prev => ({
-        ...prev,
-        genres: [...prev.genres, genreInput.trim()],
-      }));
-      setGenreInput('');
-    }
+  const handleGenresChange = (selectedValues: string[]) => {
+    setFormData(prev => ({ ...prev, genres: selectedValues }));
   };
 
-  const handleRemoveGenre = (genre: string) => {
-    setFormData(prev => ({
-      ...prev,
-      genres: prev.genres.filter(g => g !== genre),
-    }));
+  const handleDirectorsChange = (selectedValues: string[]) => {
+    setFormData(prev => ({ ...prev, directors: selectedValues }));
   };
 
-  const handleAddDirector = () => {
-    if (directorInput.trim() && !formData.directors.includes(directorInput.trim())) {
-      setFormData(prev => ({
-        ...prev,
-        directors: [...prev.directors, directorInput.trim()],
-      }));
-      setDirectorInput('');
-    }
-  };
-
-  const handleRemoveDirector = (director: string) => {
-    setFormData(prev => ({
-      ...prev,
-      directors: prev.directors.filter(d => d !== director),
-    }));
-  };
-
-  const handleAddStar = () => {
-    if (starInput.trim() && !formData.stars.includes(starInput.trim())) {
-      setFormData(prev => ({
-        ...prev,
-        stars: [...prev.stars, starInput.trim()],
-      }));
-      setStarInput('');
-    }
-  };
-
-  const handleRemoveStar = (star: string) => {
-    setFormData(prev => ({
-      ...prev,
-      stars: prev.stars.filter(s => s !== star),
-    }));
+  const handleStarsChange = (selectedValues: string[]) => {
+    setFormData(prev => ({ ...prev, stars: selectedValues }));
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     await onSubmit(formData);
   };
+
+  const genreOptions = genres.map(genre => ({
+    value: genre.uuid,
+    label: genre.name,
+  }));
+
+  const directorOptions = directors.map(director => ({
+    value: director.uuid,
+    label: director.name,
+  }));
+
+  const starOptions = stars.map(star => ({
+    value: star.uuid,
+    label: star.name,
+  }));
 
   return (
     <form className="add-movie-form" onSubmit={handleSubmit}>
@@ -160,6 +140,7 @@ const AddMovieForm = ({ onSubmit, onCancel, isLoading = false }: AddMovieFormPro
             type="date"
             value={formData.releaseDate}
             onChange={handleInputChange}
+            placeholder=""
             required
             disabled={isLoading}
           />
@@ -208,101 +189,50 @@ const AddMovieForm = ({ onSubmit, onCancel, isLoading = false }: AddMovieFormPro
 
         <div className="add-movie-form__field add-movie-form__field--full">
           <Label htmlFor="genres">Genres</Label>
-          <div className="add-movie-form__tag-input">
-            <Input
-              id="genres"
-              type="text"
-              value={genreInput}
-              onChange={(e) => setGenreInput(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddGenre())}
-              placeholder="Add genre and press Enter"
-              disabled={isLoading}
-            />
-            <Button type="button" variant="secondary" onClick={handleAddGenre} disabled={isLoading}>
-              Add
-            </Button>
-          </div>
-          <div className="add-movie-form__tags">
-            {formData.genres.map((genre, index) => (
-              <span key={index} className="add-movie-form__tag">
-                {genre}
-                <button
-                  type="button"
-                  className="add-movie-form__tag-remove"
-                  onClick={() => handleRemoveGenre(genre)}
-                  disabled={isLoading}
-                >
-                  ×
-                </button>
-              </span>
-            ))}
-          </div>
+          <InfiniteMultiSelect
+            id="genres"
+            name="genres"
+            selectedValues={formData.genres}
+            onChange={handleGenresChange}
+            options={genreOptions}
+            placeholder="Select genres"
+            onScrollEnd={() => hasNextGenres && fetchNextGenres()}
+            isLoadingMore={isFetchingNextGenres}
+            hasMore={hasNextGenres}
+            disabled={isLoading || loadingGenres}
+          />
         </div>
 
         <div className="add-movie-form__field add-movie-form__field--full">
           <Label htmlFor="directors">Directors</Label>
-          <div className="add-movie-form__tag-input">
-            <Input
-              id="directors"
-              type="text"
-              value={directorInput}
-              onChange={(e) => setDirectorInput(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddDirector())}
-              placeholder="Add director and press Enter"
-              disabled={isLoading}
-            />
-            <Button type="button" variant="secondary" onClick={handleAddDirector} disabled={isLoading}>
-              Add
-            </Button>
-          </div>
-          <div className="add-movie-form__tags">
-            {formData.directors.map((director, index) => (
-              <span key={index} className="add-movie-form__tag">
-                {director}
-                <button
-                  type="button"
-                  className="add-movie-form__tag-remove"
-                  onClick={() => handleRemoveDirector(director)}
-                  disabled={isLoading}
-                >
-                  ×
-                </button>
-              </span>
-            ))}
-          </div>
+          <InfiniteMultiSelect
+            id="directors"
+            name="directors"
+            selectedValues={formData.directors}
+            onChange={handleDirectorsChange}
+            options={directorOptions}
+            placeholder="Select directors"
+            onScrollEnd={() => hasNextDirectors && fetchNextDirectors()}
+            isLoadingMore={isFetchingNextDirectors}
+            hasMore={hasNextDirectors}
+            disabled={isLoading || loadingDirectors}
+          />
         </div>
 
         <div className="add-movie-form__field add-movie-form__field--full">
           <Label htmlFor="stars">Stars</Label>
-          <div className="add-movie-form__tag-input">
-            <Input
-              id="stars"
-              type="text"
-              value={starInput}
-              onChange={(e) => setStarInput(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddStar())}
-              placeholder="Add star and press Enter"
-              disabled={isLoading}
-            />
-            <Button type="button" variant="secondary" onClick={handleAddStar} disabled={isLoading}>
-              Add
-            </Button>
-          </div>
-          <div className="add-movie-form__tags">
-            {formData.stars.map((star, index) => (
-              <span key={index} className="add-movie-form__tag">
-                {star}
-                <button
-                  type="button"
-                  className="add-movie-form__tag-remove"
-                  onClick={() => handleRemoveStar(star)}
-                  disabled={isLoading}
-                >
-                  ×
-                </button>
-              </span>
-            ))}
-          </div>
+          <InfiniteMultiSelect
+            id="stars"
+            name="stars"
+            selectedValues={formData.stars}
+            onChange={handleStarsChange}
+            options={starOptions}
+            placeholder="Select stars"
+            onScrollEnd={() => hasNextStars && fetchNextStars()}
+            isLoadingMore={isFetchingNextStars}
+            hasMore={hasNextStars}
+            disabled={isLoading || loadingStars}
+          />
         </div>
       </div>
 
@@ -310,7 +240,7 @@ const AddMovieForm = ({ onSubmit, onCancel, isLoading = false }: AddMovieFormPro
         <Button type="button" variant="secondary" onClick={onCancel} disabled={isLoading}>
           Cancel
         </Button>
-        <Button type="submit" variant="primary" disabled={isLoading}>
+        <Button type="submit" variant="primary" disabled={isLoading || loadingGenres || loadingDirectors || loadingStars}>
           {isLoading ? (
             <>
               <LoadingSpinner size="small" />

@@ -1,11 +1,42 @@
+import { useNavigate } from 'react-router-dom';
+import LoadingSpinner from '../../../core/components/atoms/LoadingSpinner';
+import { ROUTE_PATHS } from '../../../core/routes/routeNames';
+import useDashboard from '../hooks/useDashboard';
 import './DashboardPage.css';
 
 const DashboardPage = () => {
+  const navigate = useNavigate();
+  const { data, isLoading, error } = useDashboard();
+
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount);
+  };
+
+  const formatTimeAgo = (dateString: string) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInMs = now.getTime() - date.getTime();
+    const diffInMinutes = Math.floor(diffInMs / (1000 * 60));
+    
+    if (diffInMinutes < 1) return 'Just now';
+    if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
+    
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    if (diffInHours < 24) return `${diffInHours}h ago`;
+    
+    const diffInDays = Math.floor(diffInHours / 24);
+    return `${diffInDays}d ago`;
+  };
 
   const statCards = [
     {
       title: 'Weekly Revenue',
-      value: '$24,500',
+      value: data ? formatCurrency(data.stats.weeklyRevenue) : '$0',
       change: '+12.5%',
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -19,7 +50,7 @@ const DashboardPage = () => {
     },
     {
       title: 'Tickets Sold',
-      value: '1,200',
+      value: data ? data.stats.ticketsSold.toLocaleString() : '0',
       change: '+8%',
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -32,7 +63,7 @@ const DashboardPage = () => {
     },
     {
       title: 'Active Movies',
-      value: '14',
+      value: data ? data.stats.activeMovies.toString() : '0',
       change: '0%',
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -48,7 +79,7 @@ const DashboardPage = () => {
     },
     {
       title: 'Total Halls',
-      value: '8',
+      value: data ? data.stats.totalHalls.toString() : '0',
       change: '-2%',
       icon: (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -62,34 +93,33 @@ const DashboardPage = () => {
     },
   ];
 
-  const recentBookings = [
-    {
-      customer: 'John Doe',
-      movie: 'Interstellar (IMAX)',
-      time: '2m ago',
-      seats: '03',
-      status: 'CONFIRMED',
-      avatar: 'https://i.pravatar.cc/150?img=1'
-    },
-    {
-      customer: 'Sarah Wilson',
-      movie: 'Dune: Part Two',
-      time: '18m ago',
-      seats: '01',
-      status: 'CONFIRMED',
-      avatar: 'https://i.pravatar.cc/150?img=2'
-    },
-    {
-      customer: 'Michael Scott',
-      movie: 'The Batman',
-      time: '42m ago',
-      seats: '02',
-      status: 'PENDING',
-      avatar: 'https://i.pravatar.cc/150?img=3'
-    },
-  ];
-
   const weekDays = ['M', 'T', 'W', 'T', 'F', 'S'];
+
+  const handleCreateSchedule = () => {
+    navigate(ROUTE_PATHS.SCHEDULES);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="dashboard-page">
+        <div style={{ padding: '4rem', textAlign: 'center' }}>
+          <LoadingSpinner size="large" />
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="dashboard-page">
+        <div style={{ padding: '4rem', textAlign: 'center' }}>
+          <div style={{ color: '#DC2626', marginBottom: '1rem', fontSize: '1rem' }}>
+            {error}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="dashboard-page">
@@ -131,24 +161,34 @@ const DashboardPage = () => {
                 </tr>
               </thead>
               <tbody>
-                {recentBookings.map((booking, index) => (
-                  <tr key={index}>
-                    <td>
-                      <div className="dashboard-customer">
-                        <img src={booking.avatar} alt={booking.customer} className="dashboard-avatar" />
-                        <span>{booking.customer}</span>
-                      </div>
-                    </td>
-                    <td>{booking.movie}</td>
-                    <td className="dashboard-time">{booking.time}</td>
-                    <td>{booking.seats}</td>
-                    <td>
-                      <span className={`dashboard-status dashboard-status--${booking.status.toLowerCase()}`}>
-                        {booking.status}
-                      </span>
+                {data && data.recentBookings.length > 0 ? (
+                  data.recentBookings.map((booking) => (
+                    <tr key={booking.uuid}>
+                      <td>
+                        <div className="dashboard-customer">
+                          <div className="dashboard-avatar">
+                            {booking.customerName.charAt(0).toUpperCase()}
+                          </div>
+                          <span>{booking.customerName}</span>
+                        </div>
+                      </td>
+                      <td>{booking.movieTitle}</td>
+                      <td className="dashboard-time">{formatTimeAgo(booking.createdAt)}</td>
+                      <td>{booking.seatsBooked.toString().padStart(2, '0')}</td>
+                      <td>
+                        <span className={`dashboard-status dashboard-status--${booking.status.toLowerCase()}`}>
+                          {booking.status}
+                        </span>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={5} style={{ textAlign: 'center', padding: '2rem', color: '#6B7280' }}>
+                      No recent bookings
                     </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>

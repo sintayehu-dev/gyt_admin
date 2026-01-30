@@ -6,6 +6,7 @@ export { default as Logo } from './atoms/Logo';
 export { default as ActionButton } from './atoms/ActionButton';
 export { default as LoadingSpinner } from './atoms/LoadingSpinner';
 export { default as InfiniteSelect } from './atoms/InfiniteSelect';
+export { default as InfiniteMultiSelect } from './atoms/InfiniteMultiSelect';
 
 // Molecules
 export { default as InputField } from './molecules/InputField';
