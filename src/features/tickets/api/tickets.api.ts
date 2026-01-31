@@ -141,6 +141,49 @@ export const ticketsAPI = {
     }
   },
 
+  advancedSearch: async (params: {
+    userUuid?: string;
+    scheduleUuid?: string;
+    status?: 'PENDING' | 'CONFIRMED' | 'CANCELLED' | 'EXPIRED';
+    seatNumber?: string;
+    minPrice?: number;
+    maxPrice?: number;
+    page?: number;
+    size?: number;
+  } = {}): Promise<TicketsResponse> => {
+    try {
+      const client = httpService.client({ requireAuth: true });
+
+      const queryParams = new URLSearchParams();
+      if (params.userUuid) queryParams.append('userUuid', params.userUuid);
+      if (params.scheduleUuid) queryParams.append('scheduleUuid', params.scheduleUuid);
+      if (params.status) queryParams.append('status', params.status);
+      if (params.seatNumber) queryParams.append('seatNumber', params.seatNumber);
+      if (params.minPrice !== undefined) queryParams.append('minPrice', String(params.minPrice));
+      if (params.maxPrice !== undefined) queryParams.append('maxPrice', String(params.maxPrice));
+      if (params.page !== undefined) queryParams.append('page', String(params.page));
+      if (params.size !== undefined) queryParams.append('size', String(params.size));
+
+      const response = await client.get(`/admin/tickets/search?${queryParams.toString()}`);
+
+      const transformedData = transformTicketsListResponse(response.data);
+
+      return {
+        success: true,
+        data: transformedData
+      };
+    } catch (error) {
+      const networkException = NetworkExceptions.getException(error);
+      const errorMessage = NetworkExceptions.getRawErrorMessage(error);
+
+      return {
+        success: false,
+        error: errorMessage,
+        exception: networkException
+      };
+    }
+  },
+
   deleteTicket: async (uuid: string): Promise<any> => {
     try {
       const client = httpService.client({ requireAuth: true });

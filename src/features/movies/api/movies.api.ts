@@ -57,6 +57,53 @@ export const moviesAPI = {
     }
   },
 
+  advancedSearch: async (params: {
+    title?: string;
+    description?: string;
+    language?: string;
+    genre?: string;
+    director?: string;
+    star?: string;
+    minDuration?: number;
+    maxDuration?: number;
+    page?: number;
+    size?: number;
+  } = {}): Promise<MoviesResponse> => {
+    try {
+      const client = httpService.client({ requireAuth: false });
+
+      const queryParams = new URLSearchParams();
+      if (params.title) queryParams.append('title', params.title);
+      if (params.description) queryParams.append('description', params.description);
+      if (params.language) queryParams.append('language', params.language);
+      if (params.genre) queryParams.append('genre', params.genre);
+      if (params.director) queryParams.append('director', params.director);
+      if (params.star) queryParams.append('star', params.star);
+      if (params.minDuration !== undefined) queryParams.append('minDuration', String(params.minDuration));
+      if (params.maxDuration !== undefined) queryParams.append('maxDuration', String(params.maxDuration));
+      if (params.page !== undefined) queryParams.append('page', String(params.page));
+      if (params.size !== undefined) queryParams.append('size', String(params.size));
+
+      const response = await client.get(`/movies/advanced-search?${queryParams.toString()}`);
+
+      const transformedData = transformMoviesListResponse(response.data);
+
+      return {
+        success: true,
+        data: transformedData
+      };
+    } catch (error) {
+      const networkException = NetworkExceptions.getException(error);
+      const errorMessage = NetworkExceptions.getRawErrorMessage(error);
+
+      return {
+        success: false,
+        error: errorMessage,
+        exception: networkException
+      };
+    }
+  },
+
   getMovieById: async (uuid: string): Promise<any> => {
     try {
       const client = httpService.client({ requireAuth: false });

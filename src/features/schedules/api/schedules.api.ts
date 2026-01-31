@@ -57,6 +57,45 @@ export const schedulesAPI = {
     }
   },
 
+  advancedSearch: async (params: {
+    movieUuid?: string;
+    cinemaHall?: string;
+    startDate?: string;
+    endDate?: string;
+    minPrice?: number;
+    maxPrice?: number;
+    page?: number;
+    size?: number;
+  } = {}): Promise<SchedulesResponse> => {
+    try {
+      const client = httpService.client({ requireAuth: true });
+
+      const queryParams = new URLSearchParams();
+      if (params.movieUuid) queryParams.append('movieUuid', params.movieUuid);
+      if (params.cinemaHall) queryParams.append('cinemaHall', params.cinemaHall);
+      if (params.startDate) queryParams.append('startDate', params.startDate);
+      if (params.endDate) queryParams.append('endDate', params.endDate);
+      if (params.minPrice !== undefined) queryParams.append('minPrice', String(params.minPrice));
+      if (params.maxPrice !== undefined) queryParams.append('maxPrice', String(params.maxPrice));
+      if (params.page !== undefined) queryParams.append('page', String(params.page));
+      if (params.size !== undefined) queryParams.append('size', String(params.size));
+
+      const response = await client.get(`/schedules/advanced-search?${queryParams.toString()}`);
+      const transformedData = transformSchedulesListResponse(response.data);
+
+      return { success: true, data: transformedData };
+    } catch (error) {
+      const networkException = NetworkExceptions.getException(error);
+      const errorMessage = NetworkExceptions.getRawErrorMessage(error);
+
+      return {
+        success: false,
+        error: errorMessage,
+        exception: networkException
+      };
+    }
+  },
+
   getScheduleById: async (uuid: string): Promise<any> => {
     try {
       const client = httpService.client({ requireAuth: true });
