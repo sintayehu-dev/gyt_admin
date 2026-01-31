@@ -17,7 +17,8 @@ interface CreateMovieData {
   description: string;
   durationMinutes: number;
   releaseDate: string;
-  posterUrl: string;
+  poster?: File | null;
+  posterUrl?: string;
   trailerUrl: string;
   language: string;
   genres: string[];

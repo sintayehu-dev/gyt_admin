@@ -151,17 +151,23 @@ export const moviesAPI = {
         formData.append('trailerUrl', movieData.trailerUrl);
       }
       
-      // Add arrays - backend expects format like: genres=[uuid1, uuid2, uuid3]
+      // Add UUIDs - each UUID as a separate form field
       if (movieData.genres && movieData.genres.length > 0) {
-        formData.append('genres', `[${movieData.genres.join(', ')}]`);
+        movieData.genres.forEach((uuid: string) => {
+          formData.append('genreUuids', uuid);
+        });
       }
       
       if (movieData.directors && movieData.directors.length > 0) {
-        formData.append('directors', `[${movieData.directors.join(', ')}]`);
+        movieData.directors.forEach((uuid: string) => {
+          formData.append('directorUuids', uuid);
+        });
       }
       
       if (movieData.stars && movieData.stars.length > 0) {
-        formData.append('stars', `[${movieData.stars.join(', ')}]`);
+        movieData.stars.forEach((uuid: string) => {
+          formData.append('starUuids', uuid);
+        });
       }
 
       const response = await client.post('/admin/movies', formData, {
@@ -213,17 +219,23 @@ export const moviesAPI = {
         formData.append('trailerUrl', movieData.trailerUrl);
       }
       
-      // Add arrays - backend expects format like: genres=[uuid1, uuid2, uuid3]
+      // Add UUIDs - each UUID as a separate form field
       if (movieData.genres && movieData.genres.length > 0) {
-        formData.append('genres', `[${movieData.genres.join(', ')}]`);
+        movieData.genres.forEach((uuid: string) => {
+          formData.append('genreUuids', uuid);
+        });
       }
       
       if (movieData.directors && movieData.directors.length > 0) {
-        formData.append('directors', `[${movieData.directors.join(', ')}]`);
+        movieData.directors.forEach((uuid: string) => {
+          formData.append('directorUuids', uuid);
+        });
       }
       
       if (movieData.stars && movieData.stars.length > 0) {
-        formData.append('stars', `[${movieData.stars.join(', ')}]`);
+        movieData.stars.forEach((uuid: string) => {
+          formData.append('starUuids', uuid);
+        });
       }
 
       const response = await client.put(`/admin/movies/${uuid}`, formData, {

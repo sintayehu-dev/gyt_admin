@@ -19,6 +19,26 @@ const MovieDetailPage = () => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
+  // Helper function to extract YouTube video ID from URL
+  const getYouTubeVideoId = (url: string): string | null => {
+    if (!url) return null;
+    
+    // Handle different YouTube URL formats
+    const patterns = [
+      /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/,
+      /^([a-zA-Z0-9_-]{11})$/ // Direct video ID
+    ];
+    
+    for (const pattern of patterns) {
+      const match = url.match(pattern);
+      if (match && match[1]) {
+        return match[1];
+      }
+    }
+    
+    return null;
+  };
+
   const handleBack = () => {
     navigate(ROUTE_PATHS.MOVIES);
   };
@@ -274,7 +294,7 @@ const MovieDetailPage = () => {
               <h2 className="movie-detail-page__section-title text-h6">Genres</h2>
               <div className="movie-detail-page__tags">
                 {transformedMovieData.genres && transformedMovieData.genres.length > 0 ? (
-                  transformedMovieData.genres.map((genre, index) => (
+                  transformedMovieData.genres.map((genre: string, index: number) => (
                     <span key={index} className="movie-detail-page__tag text-body-3">
                       {genre}
                     </span>
@@ -289,7 +309,7 @@ const MovieDetailPage = () => {
               <h2 className="movie-detail-page__section-title text-h6">Directors</h2>
               <div className="movie-detail-page__list">
                 {transformedMovieData.directors && transformedMovieData.directors.length > 0 ? (
-                  transformedMovieData.directors.map((director, index) => (
+                  transformedMovieData.directors.map((director: string, index: number) => (
                     <span key={index} className="movie-detail-page__list-item text-body-3">
                       {director}
                     </span>
@@ -304,7 +324,7 @@ const MovieDetailPage = () => {
               <h2 className="movie-detail-page__section-title text-h6">Stars</h2>
               <div className="movie-detail-page__list">
                 {transformedMovieData.stars && transformedMovieData.stars.length > 0 ? (
-                  transformedMovieData.stars.map((star, index) => (
+                  transformedMovieData.stars.map((star: string, index: number) => (
                     <span key={index} className="movie-detail-page__list-item text-body-3">
                       {star}
                     </span>
@@ -318,19 +338,40 @@ const MovieDetailPage = () => {
             {transformedMovieData.trailerUrl && (
               <div className="movie-detail-page__info-card">
                 <h2 className="movie-detail-page__section-title text-h6">Trailer</h2>
-                <a
-                  href={transformedMovieData.trailerUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="movie-detail-page__trailer-link text-body-3"
-                >
-                  Watch Trailer
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                    <polyline points="15 3 21 3 21 9" />
-                    <line x1="10" y1="14" x2="21" y2="3" />
-                  </svg>
-                </a>
+                {(() => {
+                  const videoId = getYouTubeVideoId(transformedMovieData.trailerUrl);
+                  
+                  if (videoId) {
+                    return (
+                      <div className="movie-detail-page__trailer-container">
+                        <iframe
+                          className="movie-detail-page__trailer-iframe"
+                          src={`https://www.youtube.com/embed/${videoId}`}
+                          title="Movie Trailer"
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        />
+                      </div>
+                    );
+                  } else {
+                    return (
+                      <a
+                        href={transformedMovieData.trailerUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="movie-detail-page__trailer-link text-body-3"
+                      >
+                        Watch Trailer
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                          <polyline points="15 3 21 3 21 9" />
+                          <line x1="10" y1="14" x2="21" y2="3" />
+                        </svg>
+                      </a>
+                    );
+                  }
+                })()}
               </div>
             )}
           </div>

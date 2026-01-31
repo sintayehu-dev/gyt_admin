@@ -49,8 +49,10 @@ const useTickets = () => {
 
       // Use specific API endpoints based on filters
       if (filters.scheduleUuid && filters.status) {
-        // If both schedule and status are selected, use schedule endpoint and filter by status client-side
-        result = await ticketsAPI.getTicketsBySchedule(filters.scheduleUuid, {
+        // If both schedule and status are selected, use advanced search
+        result = await ticketsAPI.advancedSearch({
+          scheduleUuid: filters.scheduleUuid,
+          status: filters.status,
           page: pagination.page,
           size: pagination.size,
         });
@@ -61,8 +63,9 @@ const useTickets = () => {
           size: pagination.size,
         });
       } else if (filters.status) {
-        // Use status-specific endpoint
-        result = await ticketsAPI.getTicketsByStatus(filters.status, {
+        // Use advanced search for all status types (including EXPIRED)
+        result = await ticketsAPI.advancedSearch({
+          status: filters.status,
           page: pagination.page,
           size: pagination.size,
         });
@@ -80,11 +83,6 @@ const useTickets = () => {
       }
 
       let tickets = result.data?.items || [];
-
-      // Client-side filtering if both schedule and status are selected
-      if (filters.scheduleUuid && filters.status) {
-        tickets = tickets.filter(ticket => ticket.status === filters.status);
-      }
 
       return {
         tickets,
