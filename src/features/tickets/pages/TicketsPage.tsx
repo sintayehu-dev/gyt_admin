@@ -2,10 +2,12 @@ import { useState, useMemo, useCallback } from 'react';
 import TablePageTemplate from '../../../core/components/templates/TablePageTemplate';
 import SearchInput from '../../../core/components/atoms/SearchInput';
 import Select from '../../../core/components/atoms/Select';
+import InfiniteSelect from '../../../core/components/atoms/InfiniteSelect';
 import DataTable from '../../../core/components/organisms/DataTable';
 import ActionButtons from '../../../core/components/molecules/ActionButtons';
 import ConfirmDialog from '../../../core/components/molecules/ConfirmDialog';
 import useTickets from '../hooks/useTickets';
+import useSchedulesForDropdown from '../../schedules/hooks/useSchedulesForDropdown';
 import { TicketDTO } from '../api/tickets.dto';
 import { useToast } from '../../../core/context/ToastContext';
 import './TicketsPage.css';
@@ -18,16 +20,20 @@ const TicketsPage = () => {
     error, 
     updateSearch, 
     updateStatus,
+    updateSchedule,
     updatePage, 
     updatePageSize,
     deleteTicket,
     isDeleting,
   } = useTickets();
 
+  const { schedules, isLoading: loadingSchedules, fetchNextPage, hasNextPage, isFetchingNextPage } = useSchedulesForDropdown();
+
   const { showToast } = useToast();
 
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const [scheduleFilter, setScheduleFilter] = useState('');
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState<TicketDTO | null>(null);
 
@@ -41,6 +47,12 @@ const TicketsPage = () => {
     setStatusFilter(value);
     updateStatus(value as any);
   }, [updateStatus]);
+
+  const handleScheduleChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setScheduleFilter(value);
+    updateSchedule(value);
+  }, [updateSchedule]);
 
   const handlePageChange = useCallback((page: number) => {
     updatePage(page);
@@ -104,20 +116,20 @@ const TicketsPage = () => {
       ),
     },
     {
-      key: 'bookingDate',
-      label: 'BOOKING DATE',
+      key: 'bookingTime',
+      label: 'BOOKING TIME',
       render: (ticket: TicketDTO) => (
         <div className="tickets-page__date">
-          <span className="tickets-page__date-value">{ticket.formattedBookingDate}</span>
+          <span className="tickets-page__date-value">{ticket.formattedBookingTime}</span>
         </div>
       ),
     },
     {
-      key: 'paymentDate',
-      label: 'PAYMENT DATE',
+      key: 'paymentTime',
+      label: 'PAYMENT TIME',
       render: (ticket: TicketDTO) => (
         <div className="tickets-page__date">
-          <span className="tickets-page__date-value">{ticket.formattedPaymentDate}</span>
+          <span className="tickets-page__date-value">{ticket.formattedPaymentTime}</span>
         </div>
       ),
     },
@@ -143,6 +155,13 @@ const TicketsPage = () => {
     };
   }, [pagination]);
 
+  const scheduleOptions = useMemo(() => {
+    return schedules.map(schedule => ({
+      value: schedule.uuid,
+      label: `${schedule.movie.title} - ${schedule.formattedShowDate} ${schedule.formattedShowTime} (${schedule.cinemaHall})`,
+    }));
+  }, [schedules]);
+
   const pageControls = useMemo(() => (
     <div className="tickets-page__controls">
       <div className="tickets-page__filters">
@@ -150,6 +169,17 @@ const TicketsPage = () => {
           placeholder="Search tickets..."
           value={searchTerm}
           onChange={handleSearch}
+        />
+        <InfiniteSelect
+          name="schedule"
+          value={scheduleFilter}
+          onChange={handleScheduleChange}
+          placeholder="All Schedules"
+          options={scheduleOptions as any}
+          onScrollEnd={() => hasNextPage && fetchNextPage()}
+          isLoadingMore={isFetchingNextPage}
+          hasMore={hasNextPage}
+          disabled={loadingSchedules}
         />
         <Select
           name="status"
@@ -161,10 +191,11 @@ const TicketsPage = () => {
           <option value="PENDING">Pending</option>
           <option value="CONFIRMED">Confirmed</option>
           <option value="CANCELLED">Cancelled</option>
+          <option value="EXPIRED">Expired</option>
         </Select>
       </div>
     </div>
-  ), [searchTerm, statusFilter, handleSearch, handleStatusChange]);
+  ), [searchTerm, scheduleFilter, statusFilter, scheduleOptions, handleSearch, handleScheduleChange, handleStatusChange, hasNextPage, fetchNextPage, isFetchingNextPage, loadingSchedules]);
 
   return (
     <>

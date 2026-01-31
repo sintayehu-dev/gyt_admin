@@ -19,13 +19,11 @@ const useTickets = () => {
 
   const [filters, setFilters] = useState<{
     search: string;
-    status: 'PENDING' | 'CONFIRMED' | 'CANCELLED' | undefined;
-    userUuid: string;
+    status: 'PENDING' | 'CONFIRMED' | 'CANCELLED' | 'EXPIRED' | undefined;
     scheduleUuid: string;
   }>({
     search: TicketsListRequest.search || '',
     status: TicketsListRequest.status,
-    userUuid: TicketsListRequest.userUuid || '',
     scheduleUuid: TicketsListRequest.scheduleUuid || '',
   });
 
@@ -35,10 +33,9 @@ const useTickets = () => {
       size: pagination.size,
       search: filters.search,
       status: filters.status,
-      userUuid: filters.userUuid,
       scheduleUuid: filters.scheduleUuid,
     });
-  }, [pagination.page, pagination.size, filters.search, filters.status, filters.userUuid, filters.scheduleUuid]);
+  }, [pagination.page, pagination.size, filters.search, filters.status, filters.scheduleUuid]);
 
   const {
     data: queryData,
@@ -48,21 +45,49 @@ const useTickets = () => {
   } = useQuery({
     queryKey,
     queryFn: async () => {
-      const result = await ticketsAPI.getTickets({
-        page: pagination.page,
-        size: pagination.size,
-        search: filters.search,
-        status: filters.status,
-        userUuid: filters.userUuid,
-        scheduleUuid: filters.scheduleUuid,
-      });
+      let result;
+
+      // Use specific API endpoints based on filters
+      if (filters.scheduleUuid && filters.status) {
+        // If both schedule and status are selected, use schedule endpoint and filter by status client-side
+        result = await ticketsAPI.getTicketsBySchedule(filters.scheduleUuid, {
+          page: pagination.page,
+          size: pagination.size,
+        });
+      } else if (filters.scheduleUuid) {
+        // Use schedule-specific endpoint
+        result = await ticketsAPI.getTicketsBySchedule(filters.scheduleUuid, {
+          page: pagination.page,
+          size: pagination.size,
+        });
+      } else if (filters.status) {
+        // Use status-specific endpoint
+        result = await ticketsAPI.getTicketsByStatus(filters.status, {
+          page: pagination.page,
+          size: pagination.size,
+        });
+      } else {
+        // Use general endpoint
+        result = await ticketsAPI.getTickets({
+          page: pagination.page,
+          size: pagination.size,
+          search: filters.search,
+        });
+      }
 
       if (!result.success) {
         throw new Error(result.error || 'Failed to fetch tickets');
       }
 
+      let tickets = result.data?.items || [];
+
+      // Client-side filtering if both schedule and status are selected
+      if (filters.scheduleUuid && filters.status) {
+        tickets = tickets.filter(ticket => ticket.status === filters.status);
+      }
+
       return {
-        tickets: result.data?.items || [],
+        tickets,
         pagination: result.data?.pagination || {
           page: pagination.page,
           size: pagination.size,
@@ -96,8 +121,13 @@ const useTickets = () => {
     setPagination(prev => ({ ...prev, page: 0 }));
   }, []);
 
-  const updateStatus = useCallback((status: 'PENDING' | 'CONFIRMED' | 'CANCELLED' | undefined) => {
+  const updateStatus = useCallback((status: 'PENDING' | 'CONFIRMED' | 'CANCELLED' | 'EXPIRED' | undefined) => {
     setFilters(prev => ({ ...prev, status }));
+    setPagination(prev => ({ ...prev, page: 0 }));
+  }, []);
+
+  const updateSchedule = useCallback((scheduleUuid: string) => {
+    setFilters(prev => ({ ...prev, scheduleUuid }));
     setPagination(prev => ({ ...prev, page: 0 }));
   }, []);
 
@@ -126,6 +156,7 @@ const useTickets = () => {
     filters,
     updateSearch,
     updateStatus,
+    updateSchedule,
     updatePage,
     updatePageSize,
     refetch,
