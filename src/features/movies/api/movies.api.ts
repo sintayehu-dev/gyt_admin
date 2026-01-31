@@ -128,7 +128,47 @@ export const moviesAPI = {
   createMovie: async (movieData: any): Promise<any> => {
     try {
       const client = httpService.client({ requireAuth: true });
-      const response = await client.post('/admin/movies', movieData);
+      
+      // Create FormData for multipart/form-data request
+      const formData = new FormData();
+      
+      // Add basic fields
+      formData.append('title', movieData.title);
+      formData.append('description', movieData.description);
+      formData.append('durationMinutes', String(movieData.durationMinutes));
+      formData.append('releaseDate', movieData.releaseDate);
+      formData.append('language', movieData.language);
+      
+      // Add poster file or URL
+      if (movieData.poster instanceof File) {
+        formData.append('poster', movieData.poster);
+      } else if (movieData.posterUrl) {
+        formData.append('posterUrl', movieData.posterUrl);
+      }
+      
+      // Add trailer URL
+      if (movieData.trailerUrl) {
+        formData.append('trailerUrl', movieData.trailerUrl);
+      }
+      
+      // Add arrays - backend expects format like: genres=[uuid1, uuid2, uuid3]
+      if (movieData.genres && movieData.genres.length > 0) {
+        formData.append('genres', `[${movieData.genres.join(', ')}]`);
+      }
+      
+      if (movieData.directors && movieData.directors.length > 0) {
+        formData.append('directors', `[${movieData.directors.join(', ')}]`);
+      }
+      
+      if (movieData.stars && movieData.stars.length > 0) {
+        formData.append('stars', `[${movieData.stars.join(', ')}]`);
+      }
+
+      const response = await client.post('/admin/movies', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
       return {
         success: true,
@@ -149,7 +189,48 @@ export const moviesAPI = {
   updateMovie: async (uuid: string, movieData: any): Promise<any> => {
     try {
       const client = httpService.client({ requireAuth: true });
-      const response = await client.put(`/admin/movies/${uuid}`, movieData);
+      
+      // Create FormData for multipart/form-data request
+      const formData = new FormData();
+      
+      // Add basic fields
+      formData.append('title', movieData.title);
+      formData.append('description', movieData.description);
+      formData.append('durationMinutes', String(movieData.durationMinutes));
+      formData.append('releaseDate', movieData.releaseDate);
+      formData.append('language', movieData.language);
+      formData.append('isActive', String(movieData.isActive));
+      
+      // Add poster file or URL
+      if (movieData.poster instanceof File) {
+        formData.append('poster', movieData.poster);
+      } else if (movieData.posterUrl) {
+        formData.append('posterUrl', movieData.posterUrl);
+      }
+      
+      // Add trailer URL
+      if (movieData.trailerUrl) {
+        formData.append('trailerUrl', movieData.trailerUrl);
+      }
+      
+      // Add arrays - backend expects format like: genres=[uuid1, uuid2, uuid3]
+      if (movieData.genres && movieData.genres.length > 0) {
+        formData.append('genres', `[${movieData.genres.join(', ')}]`);
+      }
+      
+      if (movieData.directors && movieData.directors.length > 0) {
+        formData.append('directors', `[${movieData.directors.join(', ')}]`);
+      }
+      
+      if (movieData.stars && movieData.stars.length > 0) {
+        formData.append('stars', `[${movieData.stars.join(', ')}]`);
+      }
+
+      const response = await client.put(`/admin/movies/${uuid}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
       return {
         success: true,

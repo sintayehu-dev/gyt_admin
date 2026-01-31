@@ -3,6 +3,7 @@ import Button from '../../../../core/components/atoms/Button';
 import Input from '../../../../core/components/atoms/Input';
 import Label from '../../../../core/components/atoms/Label';
 import LoadingSpinner from '../../../../core/components/atoms/LoadingSpinner';
+import FileUpload from '../../../../core/components/atoms/FileUpload';
 import InfiniteMultiSelect from '../../../../core/components/atoms/InfiniteMultiSelect';
 import useGenresForDropdown from '../../../genres/hooks/useGenresForDropdown';
 import useDirectorsForDropdown from '../../../directors/hooks/useDirectorsForDropdown';
@@ -20,7 +21,8 @@ export interface MovieFormData {
   description: string;
   durationMinutes: number;
   releaseDate: string;
-  posterUrl: string;
+  poster?: File | null;
+  posterUrl?: string;
   trailerUrl: string;
   language: string;
   genres: string[];
@@ -38,6 +40,7 @@ const AddMovieForm = ({ onSubmit, onCancel, isLoading = false }: AddMovieFormPro
     description: '',
     durationMinutes: 0,
     releaseDate: '',
+    poster: null,
     posterUrl: '',
     trailerUrl: '',
     language: '',
@@ -46,11 +49,21 @@ const AddMovieForm = ({ onSubmit, onCancel, isLoading = false }: AddMovieFormPro
     stars: [],
   });
 
+  const [uploadMode, setUploadMode] = useState<'file' | 'url'>('file');
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: name === 'durationMinutes' ? parseInt(value) || 0 : value,
+    }));
+  };
+
+  const handlePosterFileChange = (file: File | null) => {
+    setFormData(prev => ({
+      ...prev,
+      poster: file,
+      posterUrl: '', // Clear URL when file is selected
     }));
   };
 
@@ -162,16 +175,52 @@ const AddMovieForm = ({ onSubmit, onCancel, isLoading = false }: AddMovieFormPro
         </div>
 
         <div className="add-movie-form__field add-movie-form__field--full">
-          <Label htmlFor="posterUrl">Poster URL</Label>
-          <Input
-            id="posterUrl"
-            name="posterUrl"
-            type="url"
-            value={formData.posterUrl}
-            onChange={handleInputChange}
-            placeholder="https://example.com/poster.jpg"
-            disabled={isLoading}
-          />
+          <div className="add-movie-form__poster-section">
+            <div className="add-movie-form__poster-header">
+              <Label htmlFor="poster">Poster Image</Label>
+              <div className="add-movie-form__toggle">
+                <button
+                  type="button"
+                  className={`add-movie-form__toggle-btn ${uploadMode === 'file' ? 'active' : ''}`}
+                  onClick={() => setUploadMode('file')}
+                  disabled={isLoading}
+                >
+                  Upload File
+                </button>
+                <button
+                  type="button"
+                  className={`add-movie-form__toggle-btn ${uploadMode === 'url' ? 'active' : ''}`}
+                  onClick={() => setUploadMode('url')}
+                  disabled={isLoading}
+                >
+                  Enter URL
+                </button>
+              </div>
+            </div>
+
+            {uploadMode === 'file' ? (
+              <FileUpload
+                id="poster"
+                name="poster"
+                accept="image/*"
+                onChange={handlePosterFileChange}
+                value={formData.poster}
+                disabled={isLoading}
+                label="Upload Poster Image"
+                maxSize={5}
+              />
+            ) : (
+              <Input
+                id="posterUrl"
+                name="posterUrl"
+                type="url"
+                value={formData.posterUrl}
+                onChange={handleInputChange}
+                placeholder="https://example.com/poster.jpg"
+                disabled={isLoading}
+              />
+            )}
+          </div>
         </div>
 
         <div className="add-movie-form__field add-movie-form__field--full">
