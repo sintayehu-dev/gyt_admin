@@ -9,6 +9,7 @@ import { StarsPage } from '../../features/stars';
 import { SchedulesPage } from '../../features/schedules';
 import ScheduleDetailPage from '../../features/schedules/pages/ScheduleDetailPage';
 import { TicketsPage } from '../../features/tickets';
+import TicketDetailPage from '../../features/tickets/pages/TicketDetailPage';
 import DashboardLayout from '../layouts/DashboardLayout';
 import ProtectedRoute from './ProtectedRoute';
 import { ROUTE_PATHS } from './routeNames';
@@ -92,6 +93,10 @@ const router = createBrowserRouter([
       {
         path: ROUTE_PATHS.TICKETS,
         element: <TicketsPage />,
+      },
+      {
+        path: ROUTE_PATHS.TICKET_DETAIL,
+        element: <TicketDetailPage />,
       },
       {
         path: ROUTE_PATHS.MOVIE_DETAIL,

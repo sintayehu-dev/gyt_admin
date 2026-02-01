@@ -16,16 +16,60 @@
 .tickets-page__seat {
   font-weight: 600;
   color: var(--color-text-primary);
-  font-size: 1rem;
+  font-size: 1.125rem;
 }
 
-.tickets-page__user {
+.tickets-page__customer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tickets-page__customer-name {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.tickets-page__customer-email {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.tickets-page__movie {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tickets-page__movie-title {
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.tickets-page__movie-hall {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+.tickets-page__showtime {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tickets-page__showtime-date {
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+.tickets-page__showtime-time {
   font-size: 0.875rem;
   color: var(--color-text-secondary);
 }
 
 .tickets-page__price {
   font-weight: 600;
+  font-size: 1.125rem;
   color: var(--color-primary);
 }
 
@@ -37,21 +81,27 @@
   font-size: 0.875rem;
   font-weight: 500;
   width: fit-content;
+  text-transform: uppercase;
 }
 
-.tickets-page__status--PENDING {
+.tickets-page__status--pending {
   background: #FEF3C7;
   color: #92400E;
 }
 
-.tickets-page__status--CONFIRMED {
+.tickets-page__status--confirmed {
   background: #D1FAE5;
   color: #065F46;
 }
 
-.tickets-page__status--CANCELLED {
+.tickets-page__status--cancelled {
   background: #FEE2E2;
   color: #991B1B;
+}
+
+.tickets-page__status--expired {
+  background: #E5E7EB;
+  color: #374151;
 }
 
 .tickets-page__date {

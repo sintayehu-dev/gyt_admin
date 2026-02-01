@@ -24,6 +24,7 @@ export const ROUTE_PATHS = {
     SCHEDULE_DETAIL: '/schedules/:id',
     // Tickets
     TICKETS: '/tickets',
+    TICKET_DETAIL: '/tickets/:id',
     // Settings
     SETTINGS: '/settings',
 };

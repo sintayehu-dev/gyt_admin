@@ -184,6 +184,27 @@ export const ticketsAPI = {
     }
   },
 
+  getTicketById: async (uuid: string): Promise<any> => {
+    try {
+      const client = httpService.client({ requireAuth: true });
+      const response = await client.get(`/tickets/${uuid}`);
+
+      return {
+        success: true,
+        data: transformTicket(response.data.data)
+      };
+    } catch (error) {
+      const networkException = NetworkExceptions.getException(error);
+      const errorMessage = NetworkExceptions.getRawErrorMessage(error);
+
+      return {
+        success: false,
+        error: errorMessage,
+        exception: networkException
+      };
+    }
+  },
+
   deleteTicket: async (uuid: string): Promise<any> => {
     try {
       const client = httpService.client({ requireAuth: true });

@@ -1,4 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import TablePageTemplate from '../../../core/components/templates/TablePageTemplate';
 import SearchInput from '../../../core/components/atoms/SearchInput';
 import Select from '../../../core/components/atoms/Select';
@@ -10,9 +11,11 @@ import useTickets from '../hooks/useTickets';
 import useSchedulesForDropdown from '../../schedules/hooks/useSchedulesForDropdown';
 import { TicketDTO } from '../api/tickets.dto';
 import { useToast } from '../../../core/context/ToastContext';
+import { ROUTE_PATHS } from '../../../core/routes/routeNames';
 import './TicketsPage.css';
 
 const TicketsPage = () => {
+  const navigate = useNavigate();
   const { 
     tickets, 
     pagination, 
@@ -36,6 +39,10 @@ const TicketsPage = () => {
   const [scheduleFilter, setScheduleFilter] = useState('');
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState<TicketDTO | null>(null);
+
+  const handleView = useCallback((ticket: TicketDTO) => {
+    navigate(ROUTE_PATHS.TICKET_DETAIL.replace(':id', ticket.uuid));
+  }, [navigate]);
 
   const handleSearch = useCallback((value: string) => {
     setSearchTerm(value);
@@ -91,46 +98,53 @@ const TicketsPage = () => {
       key: 'seatNumber',
       label: 'SEAT',
       render: (ticket: TicketDTO) => (
-        <div>
-          <div className="tickets-page__seat">{ticket.seatNumber}</div>
-          <div className="tickets-page__user">User: {ticket.userUuid.substring(0, 8)}...</div>
+        <span className="tickets-page__seat">{ticket.seatNumber}</span>
+      ),
+    },
+    {
+      key: 'user',
+      label: 'CUSTOMER',
+      render: (ticket: TicketDTO) => (
+        <div className="tickets-page__customer">
+          <div className="tickets-page__customer-name">{ticket.user?.name || 'N/A'}</div>
+          <div className="tickets-page__customer-email">{ticket.user?.email || 'N/A'}</div>
         </div>
       ),
     },
     {
-      key: 'status',
-      label: 'STATUS',
+      key: 'movie',
+      label: 'MOVIE',
       render: (ticket: TicketDTO) => (
-        <span className={`tickets-page__status tickets-page__status--${ticket.status}`}>
-          {ticket.status}
-        </span>
+        <div className="tickets-page__movie">
+          <div className="tickets-page__movie-title">{ticket.schedule?.movie?.title || 'N/A'}</div>
+          <div className="tickets-page__movie-hall">{ticket.schedule?.cinemaHall || 'N/A'}</div>
+        </div>
+      ),
+    },
+    {
+      key: 'showTime',
+      label: 'SHOW TIME',
+      render: (ticket: TicketDTO) => (
+        <div className="tickets-page__showtime">
+          <div className="tickets-page__showtime-date">{ticket.schedule?.showDate || 'N/A'}</div>
+          <div className="tickets-page__showtime-time">{ticket.schedule?.showTime || 'N/A'}</div>
+        </div>
       ),
     },
     {
       key: 'price',
       label: 'PRICE',
       render: (ticket: TicketDTO) => (
-        <div className="tickets-page__price">
-          ${ticket.price.toFixed(2)}
-        </div>
+        <span className="tickets-page__price">${ticket.price.toFixed(2)}</span>
       ),
     },
     {
-      key: 'bookingTime',
-      label: 'BOOKING TIME',
+      key: 'status',
+      label: 'STATUS',
       render: (ticket: TicketDTO) => (
-        <div className="tickets-page__date">
-          <span className="tickets-page__date-value">{ticket.formattedBookingTime}</span>
-        </div>
-      ),
-    },
-    {
-      key: 'paymentTime',
-      label: 'PAYMENT TIME',
-      render: (ticket: TicketDTO) => (
-        <div className="tickets-page__date">
-          <span className="tickets-page__date-value">{ticket.formattedPaymentTime}</span>
-        </div>
+        <span className={`tickets-page__status tickets-page__status--${ticket.status.toLowerCase()}`}>
+          {ticket.status}
+        </span>
       ),
     },
     {
@@ -138,11 +152,12 @@ const TicketsPage = () => {
       label: 'ACTIONS',
       render: (ticket: TicketDTO) => (
         <ActionButtons
+          onView={() => handleView(ticket)}
           onDelete={() => handleDelete(ticket)}
         />
       ),
     },
-  ], [handleDelete]);
+  ], [handleView, handleDelete]);
 
   const paginationData = useMemo(() => {
     if (!pagination) return null;
