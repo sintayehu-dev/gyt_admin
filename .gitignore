@@ -21,6 +21,15 @@ dist-ssr
 # TypeScript
 *.tsbuildinfo
 
+# Test coverage
+coverage/
+.nyc_output/
+
+# Playwright
+playwright-report/
+test-results/
+playwright/.cache/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
