@@ -1,11 +1,7 @@
-/**
- * Logo Atom Component
- * 
- * Application logo component
- */
+
 
 import './Logo.css';
-import nestLogo from '../../assets/image/NEST.svg';
+import cinemaLogo from '../../assets/image/cinema.png';
 
 const Logo = ({ size = 'small' }) => {
   const sizeClass = `logo--${size}`;
@@ -13,7 +9,7 @@ const Logo = ({ size = 'small' }) => {
   return (
     <div className="logo">
       <img
-        src={nestLogo}
+        src={cinemaLogo}
         alt="NEST"
         className={`logo__image ${sizeClass}`}
       />
