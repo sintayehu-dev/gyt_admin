@@ -1,19 +1,30 @@
-/**
- * Sidebar Component
- * Main navigation sidebar for admin dashboard
- */
-
-import { useState } from 'react';
+import { useState, ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import Logo from '../atoms/Logo';
 import { ROUTE_PATHS } from '../../routes/routeNames';
 import './Sidebar.css';
 
-const Sidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }) => {
-    const location = useLocation();
-    const [expandedMenus, setExpandedMenus] = useState({});
+interface SidebarProps {
+    isOpen: boolean;
+    onClose: () => void;
+    isCollapsed: boolean;
+    onToggleCollapse: () => void;
+}
 
-    const menuItems = [
+interface MenuItem {
+    id: string;
+    label: string;
+    icon: ReactNode;
+    path: string;
+    hasSubmenu?: boolean;
+    submenu?: Array<{ label: string; path: string }>;
+}
+
+const Sidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }: SidebarProps) => {
+    const location = useLocation();
+    const [expandedMenus, setExpandedMenus] = useState<Record<string, boolean>>({});
+
+    const menuItems: MenuItem[] = [
         {
             id: 'dashboard',
             label: 'Dashboard',
@@ -112,14 +123,14 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }) => {
         },
     ];
 
-    const toggleSubmenu = (menuId) => {
+    const toggleSubmenu = (menuId: string) => {
         setExpandedMenus(prev => ({
             ...prev,
             [menuId]: !prev[menuId]
         }));
     };
 
-    const isActive = (path) => {
+    const isActive = (path: string) => {
         return location.pathname === path || location.pathname.startsWith(path + '/');
     };
 
@@ -183,7 +194,7 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }) => {
                                                 </svg>
                                             </span>
                                         </button>
-                                        {expandedMenus[item.id] && (
+                                        {expandedMenus[item.id] && item.submenu && (
                                             <ul className="sidebar__submenu">
                                                 {item.submenu.map((subItem, index) => (
                                                     <li key={index}>
