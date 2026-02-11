@@ -22,7 +22,7 @@ interface FormErrors {
   password?: string;
 }
 
-const LoginForm = ({ onSubmit, onGoogleLogin, loading = false, error = null }: LoginFormProps) => {
+const LoginForm = ({ onSubmit, loading = false, error = null }: LoginFormProps) => {
   const [formData, setFormData] = useState<FormData>({
     email: '',
     password: '',

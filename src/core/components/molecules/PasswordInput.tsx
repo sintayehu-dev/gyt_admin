@@ -1,13 +1,18 @@
-/**
- * PasswordInput Molecule Component
- * 
- * Password input with show/hide toggle
- */
-
-import { useState } from 'react';
+import { useState, ChangeEvent } from 'react';
 import './PasswordInput.css';
 import Label from '../atoms/Label';
 import Input from '../atoms/Input';
+
+interface PasswordInputProps {
+  label?: string;
+  name: string;
+  placeholder?: string;
+  value?: string;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  required?: boolean;
+  error?: string;
+  disabled?: boolean;
+}
 
 const PasswordInput = ({
   label,
@@ -18,7 +23,7 @@ const PasswordInput = ({
   required = false,
   error,
   disabled = false
-}) => {
+}: PasswordInputProps) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (

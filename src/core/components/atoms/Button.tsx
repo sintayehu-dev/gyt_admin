@@ -1,9 +1,3 @@
-/**
- * Button Atom Component
- * 
- * Reusable button component with different variants using external CSS
- */
-
 import { ReactNode, MouseEvent } from 'react';
 import './Button.css';
 

@@ -1,10 +1,20 @@
-/**
- * Select Atom Component
- * 
- * Reusable select dropdown component
- */
-
+import { ChangeEvent, SelectHTMLAttributes } from 'react';
 import './Select.css';
+
+interface SelectOption {
+  value: string;
+  label: string;
+}
+
+interface SelectProps extends Omit<SelectHTMLAttributes<HTMLSelectElement>, 'onChange'> {
+  options?: SelectOption[];
+  placeholder?: string;
+  value?: string;
+  onChange?: (e: ChangeEvent<HTMLSelectElement>) => void;
+  name?: string;
+  disabled?: boolean;
+  error?: boolean;
+}
 
 const Select = ({
   options = [],
@@ -15,7 +25,7 @@ const Select = ({
   disabled = false,
   error = false,
   ...props
-}) => {
+}: SelectProps) => {
   return (
     <select
       className={`select text-body-4 ${error ? 'select--error' : ''}`}

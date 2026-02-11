@@ -1,12 +1,12 @@
-/**
- * BackButton Atom Component
- * 
- * Reusable back button with arrow icon
- */
-
+import { ReactNode } from 'react';
 import './BackButton.css';
 
-const BackButton = ({ onClick, children = '    Go Back' }) => {
+interface BackButtonProps {
+    onClick: () => void;
+    children?: ReactNode;
+}
+
+const BackButton = ({ onClick, children = 'Go Back' }: BackButtonProps) => {
     return (
         <button
             onClick={onClick}

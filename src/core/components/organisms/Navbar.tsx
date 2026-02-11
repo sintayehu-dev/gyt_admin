@@ -6,10 +6,9 @@ import './Navbar.css';
 
 interface NavbarProps {
     onMenuClick: () => void;
-    isCollapsed: boolean;
 }
 
-const Navbar = ({ onMenuClick, isCollapsed }: NavbarProps) => {
+const Navbar = ({ onMenuClick }: NavbarProps) => {
     const navigate = useNavigate();
     const { user, logout } = useAuthContext();
     const [showNotifications, setShowNotifications] = useState(false);

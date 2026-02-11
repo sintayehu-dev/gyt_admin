@@ -1,11 +1,19 @@
+import { ChangeEvent } from 'react';
 import './SearchInput.css';
+
+interface SearchInputProps {
+  placeholder?: string;
+  value: string;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  disabled?: boolean;
+}
 
 const SearchInput = ({ 
   placeholder = 'Search', 
   value, 
   onChange,
   disabled = false 
-}) => {
+}: SearchInputProps) => {
   return (
     <div className="search-input">
       <svg 

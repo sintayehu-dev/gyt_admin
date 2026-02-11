@@ -1,9 +1,3 @@
-/**
- * Toast Atom Component
- * 
- * Notification toast component
- */
-
 import { useEffect } from 'react';
 import './Toast.css';
 

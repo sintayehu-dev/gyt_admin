@@ -1,6 +1,15 @@
 import IconButton from '../atoms/IconButton';
 import './TableActions.css';
 
+interface TableActionsProps {
+  onView?: () => void;
+  onEdit?: () => void;
+  onDelete?: () => void;
+  showView?: boolean;
+  showEdit?: boolean;
+  showDelete?: boolean;
+}
+
 const TableActions = ({ 
   onView, 
   onEdit, 
@@ -8,7 +17,7 @@ const TableActions = ({
   showView = true,
   showEdit = true,
   showDelete = true 
-}) => {
+}: TableActionsProps) => {
   return (
     <div className="table-actions">
       {showView && (

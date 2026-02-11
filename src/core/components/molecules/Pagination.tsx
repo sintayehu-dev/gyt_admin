@@ -12,10 +12,7 @@ interface PaginationProps {
 const Pagination = ({ 
   currentPage = 1, 
   totalPages = 1,
-  pageSize = 10,
-  totalItems = 0,
-  onPageChange,
-  onPageSizeChange
+  onPageChange
 }: PaginationProps) => {
   const renderPageNumbers = () => {
     const pages = [];
@@ -37,9 +34,6 @@ const Pagination = ({
     
     return pages;
   };
-
-  const startItem = (currentPage - 1) * pageSize + 1;
-  const endItem = Math.min(currentPage * pageSize, totalItems);
 
   const handlePrevious = () => {
     if (currentPage > 1) {

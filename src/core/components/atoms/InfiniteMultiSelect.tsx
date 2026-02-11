@@ -99,19 +99,24 @@ const InfiniteMultiSelect = ({
             <span className="infinite-multi-select__placeholder">{placeholder}</span>
           ) : (
             <div className="infinite-multi-select__tags">
-              {selectedLabels.map((label, index) => (
-                <span key={selectedValues[index]} className="infinite-multi-select__tag">
-                  {label}
-                  <button
-                    type="button"
-                    className="infinite-multi-select__tag-remove"
-                    onClick={(e) => handleRemove(selectedValues[index], e)}
-                    disabled={disabled}
-                  >
-                    ×
-                  </button>
-                </span>
-              ))}
+              {selectedLabels.map((label, index) => {
+                const value = selectedValues[index];
+                if (!value) return null;
+                
+                return (
+                  <span key={value} className="infinite-multi-select__tag">
+                    {label}
+                    <button
+                      type="button"
+                      className="infinite-multi-select__tag-remove"
+                      onClick={(e) => handleRemove(value, e)}
+                      disabled={disabled}
+                    >
+                      ×
+                    </button>
+                  </span>
+                );
+              })}
             </div>
           )}
         </div>

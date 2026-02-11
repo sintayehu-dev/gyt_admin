@@ -28,7 +28,7 @@ const DashboardLayout = () => {
                 isCollapsed={sidebarCollapsed}
                 onToggleCollapse={toggleCollapse}
             />
-            <Navbar onMenuClick={toggleSidebar} isCollapsed={sidebarCollapsed} />
+            <Navbar onMenuClick={toggleSidebar} />
 
             <main className="dashboard-layout__content">
                 <div className="dashboard-layout__content-inner">

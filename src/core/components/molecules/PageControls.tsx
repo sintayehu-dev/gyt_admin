@@ -1,6 +1,16 @@
+import { ChangeEvent } from 'react';
 import SearchInput from '../atoms/SearchInput';
 import Button from '../atoms/Button';
 import './PageControls.css';
+
+interface PageControlsProps {
+  searchValue: string;
+  onSearchChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onFilter?: () => void;
+  onExport?: () => void;
+  showFilter?: boolean;
+  showExport?: boolean;
+}
 
 const PageControls = ({ 
   searchValue, 
@@ -9,7 +19,7 @@ const PageControls = ({
   onExport,
   showFilter = true,
   showExport = true 
-}) => {
+}: PageControlsProps) => {
   return (
     <div className="page-controls">
       <SearchInput

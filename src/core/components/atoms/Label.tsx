@@ -1,12 +1,13 @@
-/**
- * Label Atom Component
- * 
- * Reusable label component for form fields with Tailwind CSS
- */
-
+import { ReactNode } from 'react';
 import './Label.css';
 
-const Label = ({ children, htmlFor, required = false }) => {
+interface LabelProps {
+  children: ReactNode;
+  htmlFor?: string;
+  required?: boolean;
+}
+
+const Label = ({ children, htmlFor, required = false }: LabelProps) => {
   return (
     <label
       className="label text-body-4"

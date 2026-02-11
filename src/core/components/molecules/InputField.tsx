@@ -1,12 +1,19 @@
-/**
- * InputField Molecule Component
- * 
- * Combines Label + Input atoms
- */
-
+import { ChangeEvent } from 'react';
 import './InputField.css';
 import Label from '../atoms/Label';
 import Input from '../atoms/Input';
+
+interface InputFieldProps {
+  label?: string;
+  name: string;
+  type?: string;
+  placeholder?: string;
+  value?: string;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  required?: boolean;
+  error?: string;
+  disabled?: boolean;
+}
 
 const InputField = ({
   label,
@@ -18,7 +25,7 @@ const InputField = ({
   required = false,
   error,
   disabled = false
-}) => {
+}: InputFieldProps) => {
   return (
     <div className="input-field">
       {label && (

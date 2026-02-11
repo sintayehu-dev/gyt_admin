@@ -1,10 +1,15 @@
-/**
- * Input Atom Component
- * 
- * Reusable input field component with external CSS
- */
-
+import { ChangeEvent, InputHTMLAttributes } from 'react';
 import './Input.css';
+
+interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
+  type?: string;
+  placeholder?: string;
+  value?: string;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  name?: string;
+  disabled?: boolean;
+  error?: boolean;
+}
 
 const Input = ({
   type = 'text',
@@ -15,7 +20,7 @@ const Input = ({
   disabled = false,
   error = false,
   ...props
-}) => {
+}: InputProps) => {
   return (
     <input
       type={type}
