@@ -8,7 +8,6 @@ const ResetPasswordPage = () => {
 
   const handleResetPassword = (data: { email: string }) => {
     console.log('Reset password submitted with:', data);
-    // For now, just navigate to check email page
     navigate(ROUTE_PATHS.CHECK_EMAIL);
   };
 

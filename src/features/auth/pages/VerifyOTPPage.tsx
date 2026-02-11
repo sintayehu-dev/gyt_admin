@@ -8,7 +8,6 @@ const VerifyOTPPage = () => {
 
   const handleVerifyOTP = (otp: string) => {
     console.log('OTP submitted:', otp);
-    // For now, just navigate to dashboard
     navigate(ROUTE_PATHS.DASHBOARD);
   };
 

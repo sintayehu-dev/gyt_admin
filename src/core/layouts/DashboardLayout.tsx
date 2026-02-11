@@ -1,8 +1,3 @@
-/**
- * DashboardLayout Component
- * Main layout wrapper for dashboard pages with sidebar and navbar
- */
-
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../components/organisms/Sidebar';

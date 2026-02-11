@@ -36,7 +36,6 @@ const LoginForm = ({ onSubmit, onGoogleLogin, loading = false, error = null }: L
       ...prev, 
       [name]: type === 'checkbox' ? checked : value 
     }));
-    // Clear error when user types
     if (errors[name as keyof FormErrors]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
     }

@@ -1,7 +1,3 @@
-/**
- * Auth API Models
- */
-
 export const LoginRequest = {
   email: '',
   password: '',

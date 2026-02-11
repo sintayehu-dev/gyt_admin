@@ -8,7 +8,6 @@ const SetNewPasswordPage = () => {
 
   const handleSetNewPassword = (data: { password: string; confirmPassword: string }) => {
     console.log('Set new password submitted with:', data);
-    // For now, just navigate to login page
     navigate(ROUTE_PATHS.LOGIN);
   };
 

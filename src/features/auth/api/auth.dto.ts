@@ -1,7 +1,3 @@
-/**
- * Auth DTOs
- */
-
 export interface UserDTO {
   uuid: string;
   email: string;

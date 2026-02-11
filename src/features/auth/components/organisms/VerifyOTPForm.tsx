@@ -1,5 +1,5 @@
 import Button from '../../../../core/components/atoms/Button';
-import { useState, useRef, ChangeEvent, KeyboardEvent, FormEvent } from 'react';
+import { useState, useRef, KeyboardEvent, FormEvent } from 'react';
 import './VerifyOTPForm.css';
 
 interface VerifyOTPFormProps {
@@ -23,7 +23,6 @@ const VerifyOTPForm = ({ onSubmit, onResend, loading = false, email = '', error:
         setOtp(newOtp);
         setError('');
 
-        // Auto-focus next input
         if (value && index < 5) {
             inputRefs.current[index + 1]?.focus();
         }
@@ -67,7 +66,7 @@ const VerifyOTPForm = ({ onSubmit, onResend, loading = false, email = '', error:
                     {otp.map((digit, index) => (
                         <input
                             key={index}
-                            ref={(el) => (inputRefs.current[index] = el)}
+                            ref={(el) => { inputRefs.current[index] = el; }}
                             type="text"
                             inputMode="numeric"
                             maxLength={1}

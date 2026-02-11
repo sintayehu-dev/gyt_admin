@@ -1,5 +1,4 @@
-
-import { useState } from 'react';
+import { useState, ChangeEvent, FormEvent } from 'react';
 import { PhoneInput } from 'react-international-phone';
 import 'react-international-phone/style.css';
 import Button from '../../../../core/components/atoms/Button';
@@ -8,8 +7,32 @@ import InputField from '../../../../core/components/molecules/InputField';
 import PasswordInput from '../../../../core/components/molecules/PasswordInput';
 import './RegisterForm.css';
 
-const RegisterForm = ({ onSubmit, loading = false, error = null }) => {
-    const [formData, setFormData] = useState({
+interface RegisterFormData {
+    fullName: string;
+    email: string;
+    phoneNumber: string;
+    password: string;
+    confirmPassword: string;
+    agreeToTerms: boolean;
+}
+
+interface RegisterFormErrors {
+    fullName?: string;
+    email?: string;
+    phoneNumber?: string;
+    password?: string;
+    confirmPassword?: string;
+    agreeToTerms?: string;
+}
+
+interface RegisterFormProps {
+    onSubmit: (data: RegisterFormData) => void;
+    loading?: boolean;
+    error?: string | null;
+}
+
+const RegisterForm = ({ onSubmit, loading = false, error = null }: RegisterFormProps) => {
+    const [formData, setFormData] = useState<RegisterFormData>({
         fullName: '',
         email: '',
         phoneNumber: '',
@@ -17,21 +40,21 @@ const RegisterForm = ({ onSubmit, loading = false, error = null }) => {
         confirmPassword: '',
         agreeToTerms: false,
     });
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState<RegisterFormErrors>({});
 
-    const handleChange = (e) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value, type, checked } = e.target;
         setFormData(prev => ({
             ...prev,
             [name]: type === 'checkbox' ? checked : value
         }));
-        if (errors[name]) {
+        if (errors[name as keyof RegisterFormErrors]) {
             setErrors(prev => ({ ...prev, [name]: '' }));
         }
     };
 
-    const validate = () => {
-        const newErrors = {};
+    const validate = (): RegisterFormErrors => {
+        const newErrors: RegisterFormErrors = {};
 
         if (!formData.fullName) {
             newErrors.fullName = 'Full name is required';
@@ -66,7 +89,7 @@ const RegisterForm = ({ onSubmit, loading = false, error = null }) => {
         return newErrors;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const newErrors = validate();
@@ -80,7 +103,6 @@ const RegisterForm = ({ onSubmit, loading = false, error = null }) => {
 
     return (
         <div className="register-form">
-            {/* Header */}
             <div className="register-form__header">
                 <h1 className="register-form__title text-h4">
                     Create Admin Account
@@ -93,9 +115,7 @@ const RegisterForm = ({ onSubmit, loading = false, error = null }) => {
                 </div>
             )}
 
-            {/* Form */}
             <form onSubmit={handleSubmit} className="register-form__form">
-                {/* Name and Email Row */}
                 <div className="register-form__row">
                     <InputField
                         label="Full Name"
@@ -120,7 +140,6 @@ const RegisterForm = ({ onSubmit, loading = false, error = null }) => {
                     />
                 </div>
 
-                {/* Phone Number */}
                 <div className="register-form__phone-wrapper">
                     <Label htmlFor="phoneNumber" required={false}>
                         Phone Number
@@ -148,7 +167,6 @@ const RegisterForm = ({ onSubmit, loading = false, error = null }) => {
                     )}
                 </div>
 
-                {/* Password Row */}
                 <div className="register-form__row">
                     <PasswordInput
                         label="Password"
@@ -171,7 +189,6 @@ const RegisterForm = ({ onSubmit, loading = false, error = null }) => {
                     />
                 </div>
 
-                {/* Terms Checkbox */}
                 <div className="register-form__checkbox-wrapper">
                     <label className="register-form__checkbox-label">
                         <input

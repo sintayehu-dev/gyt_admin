@@ -8,7 +8,6 @@ const RegisterPage = () => {
 
   const handleRegister = (userData: any) => {
     console.log('Register submitted with:', userData);
-    // For now, just navigate to verify OTP page
     navigate(ROUTE_PATHS.VERIFY_OTP);
   };
 

@@ -1,6 +1,3 @@
-// Route path constants
-// Centralized location for all route paths in the application
-
 export const ROUTE_PATHS = {
     HOME: '/',
     LOGIN: '/login',
@@ -10,43 +7,14 @@ export const ROUTE_PATHS = {
     CHECK_EMAIL: '/check-email',
     SET_NEW_PASSWORD: '/set-new-password',
     DASHBOARD: '/dashboard',
-    // Movies
     MOVIES: '/movies',
     MOVIE_DETAIL: '/movies/:id',
-    // Genres
     GENRES: '/genres',
-    // Directors
     DIRECTORS: '/directors',
-    // Stars
     STARS: '/stars',
-    // Schedules
     SCHEDULES: '/schedules',
     SCHEDULE_DETAIL: '/schedules/:id',
-    // Tickets
     TICKETS: '/tickets',
     TICKET_DETAIL: '/tickets/:id',
-    // Settings
     SETTINGS: '/settings',
-};
-
-// Route names for reference
-export const ROUTE_NAMES = {
-    HOME: 'Home',
-    LOGIN: 'Login',
-    REGISTER: 'Register',
-    VERIFY_OTP: 'Verify OTP',
-    RESET_PASSWORD: 'Reset Password',
-    CHECK_EMAIL: 'Check Email',
-    SET_NEW_PASSWORD: 'Set New Password',
-    DASHBOARD: 'Dashboard',
-    // Cinema Admin Routes
-    MOVIES: 'Movies',
-    GENRES: 'Genres',
-    DIRECTORS: 'Directors',
-    STARS: 'Stars',
-    SCHEDULES: 'Schedules',
-    SCHEDULE_DETAIL: 'Schedule Detail',
-    TICKETS: 'Tickets',
-    SETTINGS: 'Settings',
-    ERROR: 'Error',
 };
